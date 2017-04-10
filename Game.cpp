@@ -33,6 +33,7 @@ void Game::run() {
                             printf("other");
                             break;
                     }
+                    printf("\n");
                 }
             }
 
