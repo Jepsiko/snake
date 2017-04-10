@@ -1,12 +1,11 @@
 #include <SDL2/SDL.h>
-#include "string"
+#include "Game.hpp"
 
-//Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
 
 bool init();
+
 bool loadMedia();
+
 void close();
 
 SDL_Window *gWindow = NULL;
@@ -19,16 +18,20 @@ int main(int argc, char **argv) {
     if (!init()) {
         printf("Failed to initialize!\n");
     } else {
-        if(!loadMedia()) {
+        if (!loadMedia()) {
             printf("Failed to load media!\n");
         } else {
             SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
             SDL_UpdateWindowSurface(gWindow);
-            SDL_Delay(2000);
+
+            SDL_Delay(1000);
         }
     }
 
     close();
+
+    Game game = Game();
+    game.run();
 
     return 0;
 }
@@ -41,7 +44,7 @@ bool init() {
         success = false;
     } else {
         gWindow = SDL_CreateWindow(
-                "SDL Tutorial",
+                "Snake Launcher",
                 SDL_WINDOWPOS_CENTERED,
                 SDL_WINDOWPOS_CENTERED,
                 SCREEN_WIDTH,
@@ -64,9 +67,9 @@ bool loadMedia() {
 
     const char *filename = "../Ressources/Images/snakeLauncher.bmp";
     gHelloWorld = SDL_LoadBMP(filename);
-    if(gHelloWorld == NULL) {
-        printf( "Unable to load image %s! SDL Error: %s\n",
-                filename, SDL_GetError());
+    if (gHelloWorld == NULL) {
+        printf("Unable to load image %s! SDL Error: %s\n",
+               filename, SDL_GetError());
         success = false;
     }
 
