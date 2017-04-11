@@ -7,7 +7,7 @@
 
 void GameManager::run() {
     if (gameUI->init()) {
-        gameUI->update();
+        gameUI->update(snake);
     }
     gameUI->close();
 }

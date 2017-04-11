@@ -40,7 +40,7 @@ void GameGUI::close() {
     SDL_Quit();
 }
 
-void GameGUI::update() {
+void GameGUI::update(const Snake* snake) {
     bool quit = false;
     SDL_Event e;
 

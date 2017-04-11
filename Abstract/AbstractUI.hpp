@@ -5,6 +5,7 @@
 
 
 #include "AbstractManager.hpp"
+#include "../Entities/Snake.hpp"
 
 class AbstractUI {
 public:
@@ -12,7 +13,7 @@ public:
 
     virtual bool init() = 0;
 
-    virtual void update() = 0;
+    virtual void update(const Snake* snake) = 0;
 
     virtual void close() = 0;
 };

@@ -1,6 +1,4 @@
 
-
-#include <cstring>
 #include <string>
 #include "GameCUI.hpp"
 
@@ -16,14 +14,16 @@ bool GameCUI::init() {
     };
 }
 
-void GameCUI::update() {
-    char *msg = (char *) "Texte au centre";
-    int taille = (int) strlen(msg);
+void GameCUI::update(const Snake* snake) {
     bool quit = false;
 
     while(not quit and not manager->isGameOver()) {
         clear();
-        mvprintw(LINES/2, (COLS / 2) - (taille / 2), msg);
+
+        // TODO : draw the snake's head
+
+        // TODO : draw the snake's tail
+
         refresh();
         int key = getch();
         switch (key) {

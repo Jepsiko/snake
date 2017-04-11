@@ -15,7 +15,7 @@ public:
 
     bool init() override;
 
-    void update() override;
+    void update(const Snake* snake) override;
 
     void close() override;
 };
