@@ -1,10 +1,13 @@
+/*
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "Game/GameManager.hpp"
 #include "Tools/Ressources.hpp"
-#include "Game/GameUI.hpp"
+*/
 
+#include "Tools/Global.hpp"
+#include "Game/GameManager.hpp"
 
+/*
 bool init();
 
 bool loadMedia();
@@ -17,9 +20,11 @@ SDL_Surface *loadSurface(const char *path);
 SDL_Window *gWindow = NULL;
 SDL_Surface *gScreenSurface = NULL;
 SDL_Surface *gSnakeLauncher = NULL;
+ */
 
 int main(int argc, char **argv) {
 
+    /*
     //Initialize SDL
     if (!init()) {
         printf("Failed to initialize!\n");
@@ -35,12 +40,20 @@ int main(int argc, char **argv) {
     }
 
     close();
+    */
 
-    Game game = Game();
-    game.run();
+    if (argc == 2) {
+        if (strcmp(argv[1], "-c") == 0 or strcmp(argv[1], "--console") == 0) {
+            isConsole = true;
+        }
+    }
+
+    Game* game = new Game();
+    game->run();
 
     return 0;
 }
+/*
 
 bool init() {
     bool success = true;
@@ -118,4 +131,4 @@ SDL_Surface *loadSurface(const char *path) {
         SDL_FreeSurface(loadedSurface);
         return optimizedSurface;
     }
-}
+}*/

@@ -8,12 +8,12 @@
 
 class Game : public AbstractManager {
 private:
-    GameGUI *gameGUI;
+    GameUI *gameUI;
 
 public:
     Game();
 
-    void run();
+    void run() override;
 };
 
 
