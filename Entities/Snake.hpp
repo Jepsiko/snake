@@ -21,6 +21,8 @@ public:
 
     const Position* getPosition() const;
 
+    const std::vector<Position*>& getTail() const;
+
     void setDirection(const Position* direction);
 };
 

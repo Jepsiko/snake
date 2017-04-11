@@ -10,6 +10,7 @@
 class GameUI : public virtual AbstractUI {
 protected:
     GameManager* manager;
+    clock_t timer;
 
 public:
     GameUI(GameManager *manager);

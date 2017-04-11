@@ -27,7 +27,7 @@ bool Snake::move() {
 
     if (not dead) {
         tail.push_back(head);
-        tail.erase(tail.begin());
+        //tail.erase(tail.begin());
         head = nextPos;
     }
 
@@ -38,6 +38,10 @@ const Position *Snake::getPosition() const {
     return head;
 }
 
+const std::vector<Position *> &Snake::getTail() const {
+    return tail;
+}
+
 void Snake::setDirection(const Position *direction) {
-    this->direction = (Position *) direction;
+    this->direction = new Position(direction->x, direction->y);
 }

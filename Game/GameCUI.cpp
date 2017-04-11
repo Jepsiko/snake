@@ -1,12 +1,14 @@
 
 #include <string>
 #include "GameCUI.hpp"
+#include <ctime>
 
 bool GameCUI::init() {
     try {
         initscr();
         noecho();
         cbreak();
+        timer = std::clock();
         return true;
     } catch (...) {
         printf("Failed to initialize!\n");
@@ -20,11 +22,16 @@ void GameCUI::update(const Snake* snake) {
     while(not quit) {
         clear();
 
-        // TODO : play every 'x' seconds
+        if (std::clock() - timer >= 1000) {
+            if (manager->play()) timer = std::clock();
+            else quit = true;
+        }
 
-        // TODO : draw the snake's head
+        mvaddch(snake->getPosition()->y, snake->getPosition()->x, 'H');
 
-        // TODO : draw the snake's tail
+        for (auto pos : snake->getTail()) {
+            mvaddch(pos->y, pos->x, '.');
+        }
 
         refresh();
         int key = getch();
