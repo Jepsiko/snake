@@ -3,10 +3,10 @@
 #ifndef SNAKE_GAMEGUI_HPP
 #define SNAKE_GAMEGUI_HPP
 
-#include <SDL2/SDL.h>
 #include "../Tools/Constants.hpp"
+#include "../Abstract/AbstractGUI.hpp"
 
-class GameGUI {
+class GameGUI : public AbstractGUI {
 private:
     SDL_Window *gWindow = NULL;
     SDL_Surface *gScreenSurface = NULL;
@@ -14,11 +14,11 @@ private:
 public:
     GameGUI();
 
-    bool init();
+    bool init() override;
 
-    void update();
+    void update() override;
 
-    void close();
+    void close() override;
 };
 
 

@@ -4,8 +4,9 @@
 #define SNAKE_GAME_HPP
 
 #include "GameGUI.hpp"
+#include "../Abstract/AbstractManager.hpp"
 
-class Game {
+class Game : public AbstractManager {
 private:
     GameGUI *gameGUI;
 

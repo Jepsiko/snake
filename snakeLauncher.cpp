@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include "Game/GameManager.hpp"
 #include "Tools/Ressources.hpp"
+#include "Game/GameUI.hpp"
 
 
 bool init();
@@ -18,6 +19,7 @@ SDL_Surface *gScreenSurface = NULL;
 SDL_Surface *gSnakeLauncher = NULL;
 
 int main(int argc, char **argv) {
+
     //Initialize SDL
     if (!init()) {
         printf("Failed to initialize!\n");
