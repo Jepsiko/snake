@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "Game.hpp"
-#include "Ressources.hpp"
+#include "Game/GameManager.hpp"
+#include "Tools/Ressources.hpp"
 
 
 bool init();
@@ -18,7 +18,6 @@ SDL_Surface *gScreenSurface = NULL;
 SDL_Surface *gSnakeLauncher = NULL;
 
 int main(int argc, char **argv) {
-
     //Initialize SDL
     if (!init()) {
         printf("Failed to initialize!\n");
@@ -93,6 +92,7 @@ void close() {
     SDL_DestroyWindow(gWindow);
     gWindow = NULL;
 
+    IMG_Quit();
     SDL_Quit();
 }
 
@@ -104,6 +104,7 @@ SDL_Surface *loadSurface(const char *path) {
     SDL_Surface *loadedSurface = IMG_Load(path);
     if (loadedSurface == NULL) {
         printf("Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError());
+        return NULL;
     } else {
         //Convert surface to screen format
         optimizedSurface = SDL_ConvertSurface(loadedSurface, gScreenSurface->format, 0);

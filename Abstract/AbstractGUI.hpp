@@ -1,0 +1,12 @@
+
+
+#ifndef SNAKE_ABSTRACTGUI_HPP
+#define SNAKE_ABSTRACTGUI_HPP
+
+
+class AbstractGUI {
+
+};
+
+
+#endif //SNAKE_ABSTRACTGUI_HPP

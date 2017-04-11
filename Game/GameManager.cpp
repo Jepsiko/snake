@@ -1,6 +1,6 @@
 
 
-#include "Game.hpp"
+#include "GameManager.hpp"
 
 void Game::run() {
     gameGUI = new GameGUI();

@@ -4,7 +4,7 @@
 #define SNAKE_GAMEGUI_HPP
 
 #include <SDL2/SDL.h>
-#include "Constants.hpp"
+#include "../Tools/Constants.hpp"
 
 class GameGUI {
 private:

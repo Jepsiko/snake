@@ -4,8 +4,11 @@
 #define SNAKE_FOOD_HPP
 
 
-class Food {
+#include "../Position.hpp"
 
+class Food {
+private:
+    Position* position;
 };
 
 

@@ -4,8 +4,18 @@
 #define SNAKE_SNAKE_HPP
 
 
-class Snake {
+#include <vector>
+#include "../Position.hpp"
 
+class Snake {
+private:
+    Position* head;
+    std::vector<Position*> tail;
+
+public:
+    Snake(Position* startPos);
+
+    bool move(const Position* direction);
 };
 
 
