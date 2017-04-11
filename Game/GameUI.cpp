@@ -2,4 +2,4 @@
 
 #include "GameUI.hpp"
 
-GameUI::GameUI(GameManager *manager) : manager(manager) {}
+GameUI::GameUI(GameManager *manager) : manager(manager), timer(new Timer()) {}

@@ -28,7 +28,7 @@ set(SOURCE_FILES snakeLauncher.cpp
         # TOOLS
         Tools/Constants.hpp
         Tools/Ressources.hpp
-        Tools/Global.cpp)
+        Tools/Global.cpp Tools/Timer.cpp Tools/Timer.hpp)
 
 add_executable(Snake ${SOURCE_FILES})
 target_link_libraries(Snake ncurses SDL2 SDL2_image)

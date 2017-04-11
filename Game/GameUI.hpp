@@ -6,11 +6,12 @@
 
 #include "../Abstract/AbstractUI.hpp"
 #include "GameManager.hpp"
+#include "../Tools/Timer.hpp"
 
 class GameUI : public virtual AbstractUI {
 protected:
     GameManager* manager;
-    clock_t timer;
+    Timer* timer;
 
 public:
     GameUI(GameManager *manager);

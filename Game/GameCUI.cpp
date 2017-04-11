@@ -8,7 +8,7 @@ bool GameCUI::init() {
         initscr();
         noecho();
         cbreak();
-        timer = std::clock();
+        timer->start();
         return true;
     } catch (...) {
         printf("Failed to initialize!\n");
@@ -22,8 +22,8 @@ void GameCUI::update(const Snake* snake) {
     while(not quit) {
         clear();
 
-        if (std::clock() - timer >= 1000) {
-            if (manager->play()) timer = std::clock();
+        if (timer->elapsedTimeInSeconds() >= 1) {
+            if (manager->play()) timer->reset();
             else quit = true;
         }
 
