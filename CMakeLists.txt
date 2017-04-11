@@ -21,7 +21,8 @@ set(SOURCE_FILES snakeLauncher.cpp
         Position.hpp
 
         # TOOLS
-        Constants.hpp)
+        Constants.hpp
+        Ressources.hpp)
 
 add_executable(Snake ${SOURCE_FILES})
 target_link_libraries(Snake ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES})
