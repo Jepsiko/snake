@@ -2,14 +2,24 @@
 
 #include "GameCUI.hpp"
 
-bool GameUI::init() {
-    return false;
+bool GameCUI::init() {
+    try {
+        initscr();
+        return true;
+    } catch (...) {
+        printf("Failed to initialize!\n");
+        return false;
+    };
 }
 
-void GameUI::update() {
-
+void GameCUI::update() {
+    printw("Hello World");
+    refresh();
+    getch();
 }
 
-void GameUI::close() {
-
+void GameCUI::close() {
+    endwin();
 }
+
+GameCUI::GameCUI(GameManager *manager) : GameUI(manager) {}

@@ -25,6 +25,8 @@ bool GameGUI::init() {
         }
     }
 
+    if (not success) printf("Failed to initialize!\n");
+
     return success;
 }
 
@@ -39,9 +41,40 @@ void GameGUI::close() {
 }
 
 void GameGUI::update() {
-    SDL_UpdateWindowSurface(gWindow);
+    bool quit = false;
+    SDL_Event e; //TODO : put that into the GameGUI class
+
+    while (!quit) {
+        while (SDL_PollEvent(&e) != 0) {
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            } else if (e.type == SDL_KEYDOWN) {
+                switch(e.key.keysym.sym) {
+                    case SDLK_UP:
+                        printf("up");
+                        break;
+                    case SDLK_DOWN:
+                        printf("down");
+                        break;
+                    case SDLK_RIGHT:
+                        printf("right");
+                        break;
+                    case SDLK_LEFT:
+                        printf("left");
+                        break;
+                    case SDLK_ESCAPE:
+                        quit = true;
+                        break;
+                    default:
+                        printf("other");
+                        break;
+                }
+                printf("\n");
+            }
+        }
+
+        SDL_UpdateWindowSurface(gWindow);
+    }
 }
 
-GameGUI::GameGUI() {
-
-}
+GameGUI::GameGUI(GameManager *manager) : GameUI(manager) {}

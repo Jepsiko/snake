@@ -5,14 +5,17 @@
 
 #include "../Tools/Constants.hpp"
 #include "../Abstract/AbstractGUI.hpp"
+#include "GameUI.hpp"
 
-class GameGUI : public AbstractGUI {
+class GameManager;
+
+class GameGUI : public virtual AbstractGUI, public GameUI {
 private:
     SDL_Window *gWindow = NULL;
     SDL_Surface *gScreenSurface = NULL;
 
 public:
-    GameGUI();
+    GameGUI(GameManager *manager);
 
     bool init() override;
 

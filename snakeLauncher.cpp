@@ -4,6 +4,7 @@
 #include "Tools/Ressources.hpp"
 */
 
+#include <cstring>
 #include "Tools/Global.hpp"
 #include "Game/GameManager.hpp"
 
@@ -48,7 +49,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    Game* game = new Game();
+    GameManager* game = new GameManager();
     game->run();
 
     return 0;

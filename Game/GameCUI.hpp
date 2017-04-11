@@ -1,13 +1,18 @@
 
 
-#ifndef SNAKE_GAMEUI_HPP
-#define SNAKE_GAMEUI_HPP
+#ifndef SNAKE_GAMECUI_HPP
+#define SNAKE_GAMECUI_HPP
 
-#include "../Abstract/AbstractUI.hpp"
+#include "GameUI.hpp"
+#include "../Abstract/AbstractCUI.hpp"
 
-class GameUI : public AbstractUI {
+class GameManager;
+
+class GameCUI : public virtual AbstractCUI, public GameUI {
 
 public:
+    GameCUI(GameManager *manager);
+
     bool init() override;
 
     void update() override;
@@ -16,4 +21,4 @@ public:
 };
 
 
-#endif //SNAKE_GAMEUI_HPP
+#endif //SNAKE_GAMECUI_HPP

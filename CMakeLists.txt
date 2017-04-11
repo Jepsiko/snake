@@ -8,13 +8,14 @@ set(CMAKE_CXX_STANDARD 14)
 set(SOURCE_FILES snakeLauncher.cpp
 
         # ABSTRACT
-        Abstract/AbstractManager.cpp
-        Abstract/AbstractUI.cpp
-        Abstract/AbstractCUI.cpp
-        Abstract/AbstractGUI.cpp
+        Abstract/AbstractManager.hpp
+        Abstract/AbstractUI.hpp
+        Abstract/AbstractCUI.hpp
+        Abstract/AbstractGUI.hpp
 
         # GAME
         Game/GameManager.cpp
+        Game/GameUI.cpp
         Game/GameCUI.cpp
         Game/GameGUI.cpp
 

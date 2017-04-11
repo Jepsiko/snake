@@ -3,15 +3,16 @@
 #ifndef SNAKE_GAME_HPP
 #define SNAKE_GAME_HPP
 
-#include "GameGUI.hpp"
 #include "../Abstract/AbstractManager.hpp"
 
-class Game : public AbstractManager {
+class GameUI;
+
+class GameManager : public AbstractManager {
 private:
     GameUI *gameUI;
 
 public:
-    Game();
+    GameManager();
 
     void run() override;
 };
