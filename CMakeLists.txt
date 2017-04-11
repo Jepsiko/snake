@@ -10,6 +10,7 @@ set(SOURCE_FILES snakeLauncher.cpp
         # ABSTRACT
         Abstract/AbstractManager.cpp
         Abstract/AbstractUI.cpp
+        Abstract/AbstractCUI.cpp
         Abstract/AbstractGUI.cpp
 
         # GAME
@@ -25,7 +26,8 @@ set(SOURCE_FILES snakeLauncher.cpp
 
         # TOOLS
         Tools/Constants.hpp
-        Tools/Ressources.hpp Tools/Global.hpp Tools/Global.cpp Abstract/AbstractCUI.cpp Abstract/AbstractCUI.hpp)
+        Tools/Ressources.hpp
+        Tools/Global.cpp)
 
 add_executable(Snake ${SOURCE_FILES})
 target_link_libraries(Snake ncurses SDL2 SDL2_image)
