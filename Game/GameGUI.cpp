@@ -42,34 +42,37 @@ void GameGUI::close() {
 
 void GameGUI::update() {
     bool quit = false;
-    SDL_Event e; //TODO : put that into the GameGUI class
+    SDL_Event e;
 
-    while (!quit) {
+    while (not quit and not manager->isGameOver()) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 quit = true;
             } else if (e.type == SDL_KEYDOWN) {
                 switch(e.key.keysym.sym) {
-                    case SDLK_UP:
-                        printf("up");
+                    case SDLK_z: // 'Z' Key Code : UP
+                        manager->handleDirection('U');
                         break;
-                    case SDLK_DOWN:
-                        printf("down");
+
+                    case SDLK_s: // 'S' Key Code : DOWN
+                        manager->handleDirection('D');
                         break;
-                    case SDLK_RIGHT:
-                        printf("right");
+
+                    case SDLK_d: // 'D' Key Code : RIGHT
+                        manager->handleDirection('R');
                         break;
-                    case SDLK_LEFT:
-                        printf("left");
+
+                    case SDLK_q: // 'Q' Key Code : LEFT
+                        manager->handleDirection('L');
                         break;
+
                     case SDLK_ESCAPE:
                         quit = true;
                         break;
+
                     default:
-                        printf("other");
                         break;
                 }
-                printf("\n");
             }
         }
 

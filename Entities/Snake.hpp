@@ -11,11 +11,16 @@ class Snake {
 private:
     Position* head;
     std::vector<Position*> tail;
+    Position* direction;
 
 public:
-    Snake(Position* startPos);
+    Snake(Position* startPos = new Position());
 
     bool move(const Position* direction);
+
+    bool move();
+
+    const Position* getPosition() const;
 };
 
 
