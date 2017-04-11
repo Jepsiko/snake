@@ -17,8 +17,10 @@ bool GameCUI::init() {
 void GameCUI::update(const Snake* snake) {
     bool quit = false;
 
-    while(not quit and not manager->isGameOver()) {
+    while(not quit) {
         clear();
+
+        // TODO : play every 'x' seconds
 
         // TODO : draw the snake's head
 

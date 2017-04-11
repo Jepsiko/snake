@@ -1,10 +1,7 @@
 
 
 #include "Snake.hpp"
-
-bool Snake::move(const Position *direction) {
-    return false;
-}
+#include <algorithm>
 
 Snake::Snake(Position *startPos) {
     head = startPos;
@@ -12,9 +9,35 @@ Snake::Snake(Position *startPos) {
 }
 
 bool Snake::move() {
-    return move(direction);
+    bool dead = false;
+
+    printf("Head : ");
+    printf(head->to_string().c_str());
+    printf("\nDirection : ");
+    printf(direction->to_string().c_str());
+    printf("\nNext Pos : ");
+    Position* nextPos = *direction + *head;
+    printf(nextPos->to_string().c_str());
+    printf("\nTail : ");
+    for (auto pos : tail) {
+        printf(pos->to_string().c_str());
+        if (not dead and *pos == *nextPos) dead = true;
+    }
+    printf("\n\n");
+
+    if (not dead) {
+        tail.push_back(head);
+        tail.erase(tail.begin());
+        head = nextPos;
+    }
+
+    return dead;
 }
 
 const Position *Snake::getPosition() const {
     return head;
+}
+
+void Snake::setDirection(const Position *direction) {
+    this->direction = (Position *) direction;
 }

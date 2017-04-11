@@ -22,6 +22,7 @@ bool GameGUI::init() {
             success = false;
         } else {
             gScreenSurface = SDL_GetWindowSurface(gWindow);
+            // TODO : set background
         }
     }
 
@@ -44,7 +45,13 @@ void GameGUI::update(const Snake* snake) {
     bool quit = false;
     SDL_Event e;
 
-    while (not quit and not manager->isGameOver()) {
+    // TODO : play every 'x' seconds
+
+    // TODO : draw the snake's head
+
+    // TODO : draw the snake's tail
+
+    while (not quit) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 quit = true;

@@ -21,7 +21,7 @@ public:
 
     void handleDirection(char direction);
 
-    bool isGameOver();
+    bool play();
 };
 
 
