@@ -4,7 +4,7 @@
 #include <algorithm>
 
 Snake::Snake(Position *startPos) {
-    lenght = 3;
+    lenght = 5;
     head = startPos;
     direction = new Position(1, 0);
 }
@@ -33,7 +33,7 @@ bool Snake::move() {
     if (dead) logFile << "\nDEAD";
     else {
         tail.push_back(head);
-        if (tail.size() >= lenght) tail.erase(tail.begin());
+        if (tail.size() > lenght) tail.erase(tail.begin());
         head = nextPos;
     }
 

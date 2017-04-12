@@ -1,6 +1,7 @@
 
 #include <string>
 #include "GameCUI.hpp"
+#include "../Tools/Constants.hpp"
 
 bool GameCUI::init() {
     try {
@@ -10,9 +11,6 @@ bool GameCUI::init() {
         scrollok(stdscr, TRUE);
         nodelay(stdscr, TRUE);
         curs_set(0);
-
-        height = LINES;
-        width = COLS;
 
         timer->reset();
         return true;
@@ -27,21 +25,29 @@ void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
     bool quit = false;
 
     while(not quit) {
+        height = LINES;
+        width = COLS;
         clear();
 
-        if (timer->elapsedTimeInMiliseconds() >= 300) {
+        if (timer->elapsedTimeInMiliseconds() >= TIME_BETWEEN_STEPS) {
             if (not manager->play()) timer->reset();
             else quit = true;
         }
 
-        mvaddch(snake->getPosition()->y, snake->getPosition()->x, '#');
+        mvaddch(height/2,
+                width/2,
+                '#');
 
         for (auto pos : snake->getTail()) {
-            mvaddch(pos->y, pos->x, '*');
+            mvaddch(height/2+pos->y-snake->getPosition()->y,
+                    width/2+pos->x-snake->getPosition()->x,
+                    '*');
         }
 
         for (auto cherry : food) {
-            mvaddch(cherry->getPosition()->y, cherry->getPosition()->x, 'O');
+            mvaddch(height/2+cherry->getPosition()->y-snake->getPosition()->y,
+                    width/2+cherry->getPosition()->x-snake->getPosition()->x,
+                    'O');
         }
 
         refresh();

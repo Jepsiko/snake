@@ -12,7 +12,7 @@ void GameManager::run() {
     gameUI->close();
 }
 
-GameManager::GameManager() : snake(new Snake(new Position(20, 20))), gameOver(false) {
+GameManager::GameManager() : snake(new Snake(new Position())), gameOver(false) {
     spawnFood();
     if (isConsole) gameUI = new GameCUI(this);
     else gameUI = new GameGUI(this);
