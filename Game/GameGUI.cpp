@@ -74,7 +74,7 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
                 fillRect = {width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS,
                             height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS,
                             IMAGE_SIZE_PIXELS, IMAGE_SIZE_PIXELS};
-                SDL_SetRenderDrawColor(gRenderer, 0x50, 0xFF, 0x50, 0xFF); // DARK GREEN
+                SDL_SetRenderDrawColor(gRenderer, 0x9F, 0xFF, 0x9F, 0xFF); // DARK GREEN
                 SDL_RenderFillRect(gRenderer, &fillRect);
             }
 
