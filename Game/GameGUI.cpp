@@ -6,7 +6,7 @@ bool GameGUI::init() {
     bool success = true;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        logFile << "SDL could not initialize! SDL_Error: %s\n", SDL_GetError();
         success = false;
     } else {
         gWindow = SDL_CreateWindow(
@@ -18,40 +18,78 @@ bool GameGUI::init() {
                 SDL_WINDOW_FULLSCREEN_DESKTOP);
 
         if (gWindow == NULL) {
-            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+            logFile << "Window could not be created! SDL_Error: %s\n", SDL_GetError();
             success = false;
         } else {
-            gScreenSurface = SDL_GetWindowSurface(gWindow);
-            // TODO : set background
+            gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+            if(gRenderer == NULL) {
+                logFile << "Renderer could not be created! SDL Error: %s\n", SDL_GetError();
+                success = false;
+            } else {
+                timer->reset();
+                gScreenSurface = SDL_GetWindowSurface(gWindow);
+                SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0xFF, 0xFF, 0xFF));
+                // TODO : set background
+            }
         }
     }
 
-    if (not success) printf("Failed to initialize!\n");
+    if (not success) logFile << "Failed to initialize!\n";
 
     return success;
-}
-
-void GameGUI::close() {
-    SDL_FreeSurface(gScreenSurface);
-    gScreenSurface = NULL;
-
-    SDL_DestroyWindow(gWindow);
-    gWindow = NULL;
-
-    SDL_Quit();
 }
 
 void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
     bool quit = false;
     SDL_Event e;
-
-    // TODO : play every 'x' seconds
-
-    // TODO : draw the snake's head
-
-    // TODO : draw the snake's tail
+    int* tmpWidth = new int(0);
+    int* tmpHeight = new int(0);
+    SDL_Rect fillRect;
 
     while (not quit) {
+
+        // Play every TIME_BETWEEN_STEPS milliseconds
+        if (timer->elapsedTimeInMiliseconds() >= TIME_BETWEEN_STEPS) {
+            if (not manager->play()) timer->reset();
+            else quit = true;
+
+            SDL_GetWindowSize(gWindow, tmpWidth, tmpHeight);
+            width = *tmpWidth;
+            height = *tmpHeight;
+
+            // Clear
+            SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            SDL_RenderClear(gRenderer);
+
+            // TODO : draw the snake's head
+            fillRect = {width/2,
+                        height/2,
+                        IMAGE_SIZE_PIXELS, IMAGE_SIZE_PIXELS};
+            SDL_SetRenderDrawColor(gRenderer, 0x00, 0xFF, 0x00, 0xFF); // GREEN
+            SDL_RenderFillRect(gRenderer, &fillRect);
+
+            // TODO : draw the snake's tail
+            for (auto pos : snake->getTail()) {
+                fillRect = {width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS,
+                            height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS,
+                            IMAGE_SIZE_PIXELS, IMAGE_SIZE_PIXELS};
+                SDL_SetRenderDrawColor(gRenderer, 0x50, 0xFF, 0x50, 0xFF); // DARK GREEN
+                SDL_RenderFillRect(gRenderer, &fillRect);
+            }
+
+            // TODO : draw the food
+            for (auto cherry : food) {
+                fillRect = {width/2 + (cherry->getPosition()->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS,
+                            height/2 + (cherry->getPosition()->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS,
+                            IMAGE_SIZE_PIXELS, IMAGE_SIZE_PIXELS};
+                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF); // RED
+                SDL_RenderFillRect(gRenderer, &fillRect);
+            }
+
+            SDL_UpdateWindowSurface(gWindow);
+            SDL_RenderPresent(gRenderer);
+        }
+
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 quit = true;
@@ -82,9 +120,17 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
                 }
             }
         }
-
-        SDL_UpdateWindowSurface(gWindow);
     }
+}
+
+void GameGUI::close() {
+    SDL_FreeSurface(gScreenSurface);
+    gScreenSurface = NULL;
+
+    SDL_DestroyWindow(gWindow);
+    gWindow = NULL;
+
+    SDL_Quit();
 }
 
 GameGUI::GameGUI(GameManager *manager) : GameUI(manager) {}

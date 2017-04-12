@@ -8,4 +8,6 @@ Play in graphic mode : `./Snake`
 
 # Future changes
 - Multiplayer mode
+
+# Recent changes
 - Graphic mode

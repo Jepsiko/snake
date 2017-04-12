@@ -13,6 +13,7 @@ class GameGUI : public virtual AbstractGUI, public GameUI {
 private:
     SDL_Window *gWindow = NULL;
     SDL_Surface *gScreenSurface = NULL;
+    SDL_Renderer* gRenderer = NULL;
 
 public:
     GameGUI(GameManager *manager);

@@ -25,32 +25,38 @@ void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
     bool quit = false;
 
     while(not quit) {
-        height = LINES;
-        width = COLS;
-        clear();
-
+        // Play every TIME_BETWEEN_STEPS milliseconds
         if (timer->elapsedTimeInMiliseconds() >= TIME_BETWEEN_STEPS) {
+            height = LINES;
+            width = COLS;
+
+            clear();
+
             if (not manager->play()) timer->reset();
             else quit = true;
+
+            // Draw the head of the snake
+            mvaddch(height/2,
+                    width/2,
+                    '#');
+
+            // Draw the tail of the snake
+            for (auto pos : snake->getTail()) {
+                mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                        width/2 + pos->x - snake->getPosition()->x,
+                        '*');
+            }
+
+            // Draw the food
+            for (auto cherry : food) {
+                mvaddch(height/2 + cherry->getPosition()->y - snake->getPosition()->y,
+                        width/2 + cherry->getPosition()->x - snake->getPosition()->x,
+                        'O');
+            }
+
+            refresh();
         }
 
-        mvaddch(height/2,
-                width/2,
-                '#');
-
-        for (auto pos : snake->getTail()) {
-            mvaddch(height/2+pos->y-snake->getPosition()->y,
-                    width/2+pos->x-snake->getPosition()->x,
-                    '*');
-        }
-
-        for (auto cherry : food) {
-            mvaddch(height/2+cherry->getPosition()->y-snake->getPosition()->y,
-                    width/2+cherry->getPosition()->x-snake->getPosition()->x,
-                    'O');
-        }
-
-        refresh();
         int key = getch();
         switch (key) {
             case 27: // Escape Key Code
