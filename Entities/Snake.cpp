@@ -7,9 +7,11 @@ Snake::Snake(Position *startPos) {
     lenght = 5;
     head = startPos;
     direction = new Position(1, 0);
+    tmpDirection = new Position(1, 0);
 }
 
 bool Snake::move() {
+    changeDirection();
     bool dead = false;
 
     logFile << "Head : " << head->to_string().c_str();
@@ -50,9 +52,9 @@ const std::vector<Position *> &Snake::getTail() const {
     return tail;
 }
 
-void Snake::setDirection(const Position *direction) {
-    if (*(*this->direction + *direction) == Position()) return; // If it's an opposite direction
-    this->direction = new Position(direction->x, direction->y);
+void Snake::changeDirection() {
+    if (*(*direction + *tmpDirection) == Position()) return; // If it's an opposite direction
+    this->direction = new Position(tmpDirection->x, tmpDirection->y);
 }
 
 void Snake::grow() {
@@ -75,4 +77,8 @@ bool Snake::onSnake(Position *position) {
     }
 
     return isOnSnake;
+}
+
+void Snake::setTmpDirection(const Position *direction) {
+    this->tmpDirection = new Position(direction->x, direction->y);
 }

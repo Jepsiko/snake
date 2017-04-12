@@ -43,7 +43,7 @@ void GameManager::handleDirection(char directionChar) {
             direction = new Position(0, 0);
             break;
     }
-    snake->setDirection(direction);
+    snake->setTmpDirection(direction);
 }
 
 bool GameManager::play() {
@@ -73,14 +73,20 @@ bool GameManager::play() {
 void GameManager::spawnFood() {
     srand((unsigned) time(0));
     int range = 20;
+    int tries = 0;
 
     Position* foodPos;
     int x;
     int y;
     do {
+        if (tries >= 20) {
+            range++;
+            tries = 0;
+        }
         x = snake->getPosition()->x + rand()%range - range/2;
         y = snake->getPosition()->y + rand()%range - range/2;
         foodPos = new Position(x, y);
+        tries++;
     } while (snake->onSnake(foodPos));
 
     food.push_back(new Food(foodPos));

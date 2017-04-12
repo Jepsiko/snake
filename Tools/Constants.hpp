@@ -7,6 +7,6 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-const int TIME_BETWEEN_STEPS = 200; // In milliseconds
+const int TIME_BETWEEN_STEPS = 250; // In milliseconds
 
 #endif //SNAKE_CONSTANTS_HPP

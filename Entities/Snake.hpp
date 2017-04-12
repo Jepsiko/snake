@@ -13,6 +13,9 @@ private:
     std::vector<Position*> tail;
     int lenght;
     Position* direction;
+    Position* tmpDirection;
+
+    void changeDirection();
 
 public:
     Snake(Position* startPos);
@@ -27,7 +30,7 @@ public:
 
     const std::vector<Position*>& getTail() const;
 
-    void setDirection(const Position* direction);
+    void setTmpDirection(const Position* direction);
 };
 
 
