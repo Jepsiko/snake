@@ -35,12 +35,12 @@ void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
             if (not manager->play()) timer->reset();
             else quit = true;
 
-            // Draw the head of the snake
+            // Draw the snake's head
             mvaddch(height/2,
                     width/2,
                     '#');
 
-            // Draw the tail of the snake
+            // Draw the snake's tail
             for (auto pos : snake->getTail()) {
                 mvaddch(height/2 + pos->y - snake->getPosition()->y,
                         width/2 + pos->x - snake->getPosition()->x,

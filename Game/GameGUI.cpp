@@ -15,7 +15,9 @@ bool GameGUI::init() {
                 SDL_WINDOWPOS_CENTERED,
                 SCREEN_WIDTH,
                 SCREEN_HEIGHT,
-                SDL_WINDOW_FULLSCREEN_DESKTOP);
+                SDL_WINDOW_RESIZABLE);
+        SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+        fullscreen = true;
 
         if (gWindow == NULL) {
             logFile << "Window could not be created! SDL_Error: %s\n", SDL_GetError();
@@ -29,7 +31,6 @@ bool GameGUI::init() {
                 timer->reset();
                 gScreenSurface = SDL_GetWindowSurface(gWindow);
                 SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0xFF, 0xFF, 0xFF));
-                // TODO : set background
             }
         }
     }
@@ -61,14 +62,14 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
             SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
             SDL_RenderClear(gRenderer);
 
-            // TODO : draw the snake's head
+            // Draw the snake's head
             fillRect = {width/2,
                         height/2,
                         IMAGE_SIZE_PIXELS, IMAGE_SIZE_PIXELS};
             SDL_SetRenderDrawColor(gRenderer, 0x00, 0xFF, 0x00, 0xFF); // GREEN
             SDL_RenderFillRect(gRenderer, &fillRect);
 
-            // TODO : draw the snake's tail
+            // Draw the snake's tail
             for (auto pos : snake->getTail()) {
                 fillRect = {width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS,
                             height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS,
@@ -77,7 +78,7 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
                 SDL_RenderFillRect(gRenderer, &fillRect);
             }
 
-            // TODO : draw the food
+            // Draw the food
             for (auto cherry : food) {
                 fillRect = {width/2 + (cherry->getPosition()->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS,
                             height/2 + (cherry->getPosition()->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS,
@@ -86,7 +87,6 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
                 SDL_RenderFillRect(gRenderer, &fillRect);
             }
 
-            SDL_UpdateWindowSurface(gWindow);
             SDL_RenderPresent(gRenderer);
         }
 
@@ -112,7 +112,13 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
                         break;
 
                     case SDLK_ESCAPE:
-                        quit = true;
+                        if (fullscreen) {
+                            SDL_SetWindowFullscreen(gWindow, 0);
+                            fullscreen = false;
+                        } else {
+                            SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+                            fullscreen = true;
+                        }
                         break;
 
                     default:
