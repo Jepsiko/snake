@@ -1,6 +1,7 @@
 
 
 #include "Snake.hpp"
+#include "../Tools/Global.hpp"
 #include <algorithm>
 
 Snake::Snake(Position *startPos) {
@@ -11,25 +12,32 @@ Snake::Snake(Position *startPos) {
 bool Snake::move() {
     bool dead = false;
 
-    printf("Head : ");
-    printf(head->to_string().c_str());
-    printf("\nDirection : ");
-    printf(direction->to_string().c_str());
-    printf("\nNext Pos : ");
-    Position* nextPos = *direction + *head;
-    printf(nextPos->to_string().c_str());
-    printf("\nTail : ");
-    for (auto pos : tail) {
-        printf(pos->to_string().c_str());
-        if (not dead and *pos == *nextPos) dead = true;
-    }
-    printf("\n\n");
+    logFile << "Head : " << head->to_string().c_str();
 
-    if (not dead) {
+    logFile << "\nDirection : " << direction->to_string().c_str();
+
+    Position* nextPos = *direction + *head;
+    logFile << "\nNext Pos : " << nextPos->to_string().c_str();
+
+    logFile << "\nTail : ";
+    for (auto pos : tail) {
+        logFile << pos->to_string().c_str();
+        if (not dead) {
+            if (*pos == *nextPos) {
+                dead = true;
+            }
+        }
+    }
+    logFile << "\n";
+
+    if (dead) logFile << "\nDEAD";
+    else {
         tail.push_back(head);
         //tail.erase(tail.begin());
         head = nextPos;
     }
+
+    logFile << "\n";
 
     return dead;
 }

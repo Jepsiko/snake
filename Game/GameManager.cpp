@@ -37,7 +37,8 @@ void GameManager::handleDirection(char directionChar) {
             break;
 
         default:
-            printf("Error of direction");
+            logFile << "Error of direction\n";
+            printf("Error of direction\n");
             direction = new Position(0, 0);
             break;
     }
@@ -46,7 +47,7 @@ void GameManager::handleDirection(char directionChar) {
 
 bool GameManager::play() {
     // TODO : test if snake->getPosition() + direction != obstacle (or other snake if multiplayer ?)
-    printf("play");
+    logFile << "Play\n";
     if (not gameOver) gameOver = snake->move();
     return gameOver;
 }

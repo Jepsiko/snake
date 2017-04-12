@@ -1,16 +1,16 @@
 
 #include <string>
 #include "GameCUI.hpp"
-#include <ctime>
 
 bool GameCUI::init() {
     try {
         initscr();
         noecho();
         cbreak();
-        timer->start();
+        timer->reset();
         return true;
     } catch (...) {
+        logFile << "Failed to initialize!\n";
         printf("Failed to initialize!\n");
         return false;
     };
@@ -22,8 +22,8 @@ void GameCUI::update(const Snake* snake) {
     while(not quit) {
         clear();
 
-        if (timer->elapsedTimeInSeconds() >= 1) {
-            if (manager->play()) timer->reset();
+        if (timer->elapsedTimeInMiliseconds() >= 300) {
+            if (not manager->play()) timer->reset();
             else quit = true;
         }
 

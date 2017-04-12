@@ -6,6 +6,7 @@
 
 #include <iosfwd>
 #include <string>
+#include "Tools/Global.hpp"
 
 class Position {
 public:
