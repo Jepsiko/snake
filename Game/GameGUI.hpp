@@ -19,7 +19,7 @@ public:
 
     bool init() override;
 
-    void update(const Snake* snake) override;
+    void update(const Snake* snake, const std::vector<Food*>&) override;
 
     void close() override;
 };

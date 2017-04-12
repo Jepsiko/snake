@@ -41,7 +41,7 @@ void GameGUI::close() {
     SDL_Quit();
 }
 
-void GameGUI::update(const Snake* snake) {
+void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
     bool quit = false;
     SDL_Event e;
 

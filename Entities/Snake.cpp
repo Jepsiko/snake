@@ -1,10 +1,10 @@
 
 
 #include "Snake.hpp"
-#include "../Tools/Global.hpp"
 #include <algorithm>
 
 Snake::Snake(Position *startPos) {
+    lenght = 3;
     head = startPos;
     direction = new Position(1, 0);
 }
@@ -33,7 +33,7 @@ bool Snake::move() {
     if (dead) logFile << "\nDEAD";
     else {
         tail.push_back(head);
-        //tail.erase(tail.begin());
+        if (tail.size() >= lenght) tail.erase(tail.begin());
         head = nextPos;
     }
 
@@ -51,5 +51,28 @@ const std::vector<Position *> &Snake::getTail() const {
 }
 
 void Snake::setDirection(const Position *direction) {
+    if (*(*this->direction + *direction) == Position()) return; // If it's an opposite direction
     this->direction = new Position(direction->x, direction->y);
+}
+
+void Snake::grow() {
+    lenght++;
+}
+
+bool Snake::onSnake(Position *position) {
+    bool isOnSnake = false;
+
+    if (*head == *position) isOnSnake = true;
+    else {
+        for (auto pos : tail) {
+            logFile << pos->to_string().c_str();
+            if (not isOnSnake) {
+                if (*pos == *position) {
+                    isOnSnake = true;
+                }
+            }
+        }
+    }
+
+    return isOnSnake;
 }

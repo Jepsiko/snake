@@ -22,5 +22,8 @@ std::string filename() {
 }
 
 bool isConsole;
+
 std::ofstream logFile(filename(), std::ios_base::app);
 
+int height;
+int width;

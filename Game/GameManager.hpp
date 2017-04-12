@@ -5,6 +5,7 @@
 
 #include "../Abstract/AbstractManager.hpp"
 #include "../Entities/Snake.hpp"
+#include "../Entities/Food.hpp"
 
 class GameUI;
 
@@ -13,6 +14,11 @@ private:
     GameUI *gameUI;
     Snake *snake;
     bool gameOver;
+    std::vector<Food*> food;
+
+    void spawnFood();
+
+    void deleteFood(Position* position);
 
 public:
     GameManager();

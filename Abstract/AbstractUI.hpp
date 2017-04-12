@@ -6,6 +6,7 @@
 
 #include "AbstractManager.hpp"
 #include "../Entities/Snake.hpp"
+#include "../Entities/Food.hpp"
 
 class AbstractUI {
 public:
@@ -13,7 +14,7 @@ public:
 
     virtual bool init() = 0;
 
-    virtual void update(const Snake* snake) = 0;
+    virtual void update(const Snake* snake, const std::vector<Food*>& food) = 0;
 
     virtual void close() = 0;
 };

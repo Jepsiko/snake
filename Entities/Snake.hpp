@@ -15,9 +15,13 @@ private:
     Position* direction;
 
 public:
-    Snake(Position* startPos = new Position());
+    Snake(Position* startPos);
 
     bool move();
+
+    void grow();
+
+    bool onSnake(Position* position);
 
     const Position* getPosition() const;
 

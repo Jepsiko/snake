@@ -9,6 +9,11 @@
 class Food {
 private:
     Position* position;
+
+public:
+    Food(Position* position);
+
+    const Position* getPosition() const;
 };
 
 

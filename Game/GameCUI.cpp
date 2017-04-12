@@ -7,6 +7,13 @@ bool GameCUI::init() {
         initscr();
         noecho();
         cbreak();
+        scrollok(stdscr, TRUE);
+        nodelay(stdscr, TRUE);
+        curs_set(0);
+
+        height = LINES;
+        width = COLS;
+
         timer->reset();
         return true;
     } catch (...) {
@@ -16,7 +23,7 @@ bool GameCUI::init() {
     };
 }
 
-void GameCUI::update(const Snake* snake) {
+void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
     bool quit = false;
 
     while(not quit) {
@@ -27,10 +34,14 @@ void GameCUI::update(const Snake* snake) {
             else quit = true;
         }
 
-        mvaddch(snake->getPosition()->y, snake->getPosition()->x, 'H');
+        mvaddch(snake->getPosition()->y, snake->getPosition()->x, '#');
 
         for (auto pos : snake->getTail()) {
-            mvaddch(pos->y, pos->x, '.');
+            mvaddch(pos->y, pos->x, '*');
+        }
+
+        for (auto cherry : food) {
+            mvaddch(cherry->getPosition()->y, cherry->getPosition()->x, 'O');
         }
 
         refresh();
@@ -40,19 +51,23 @@ void GameCUI::update(const Snake* snake) {
                 quit = true;
                 break;
 
-            case 122: // 'Z' Key Code : UP
+            case 'z':
+            case 'Z': // UP
                 manager->handleDirection('U');
                 break;
 
-            case 115: // 'S' Key Code : DOWN
+            case 's':
+            case 'S': // DOWN
                 manager->handleDirection('D');
                 break;
 
-            case 113: // 'Q' Key Code : LEFT
+            case 'q':
+            case 'Q': // LEFT
                 manager->handleDirection('L');
                 break;
 
-            case 100: // 'D' Key Code : RIGHT
+            case 'd':
+            case 'D': // RIGHT
                 manager->handleDirection('R');
                 break;
 
