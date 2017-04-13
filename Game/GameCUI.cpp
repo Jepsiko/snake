@@ -41,10 +41,24 @@ void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
                     '#');
 
             // Draw the snake's tail
+            unsigned long count = snake->getTail().size();
+            Position* before = (Position *) snake->getPosition();
+            Position* after;
             for (auto pos : snake->getTail()) {
-                mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                        width/2 + pos->x - snake->getPosition()->x,
-                        '*');
+                after = snake->getTail().size() > count ? snake->getTail().at(count) : NULL;
+
+                if (after == NULL) {
+                    mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                            width/2 + pos->x - snake->getPosition()->x,
+                            '*');
+                } else {
+                    mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                            width/2 + pos->x - snake->getPosition()->x,
+                            ACS_HLINE);
+                }
+
+                before = pos;
+                count--;
             }
 
             // Draw the food

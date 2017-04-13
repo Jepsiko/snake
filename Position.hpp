@@ -24,6 +24,10 @@ public:
     friend Position* operator+(const Position& a, const Position& b) {
         return new Position(a.x + b.x, a.y + b.y);
     }
+
+    friend Position* operator-(const Position& a, const Position& b) {
+        return new Position(a.x - b.x, a.y - b.y);
+    }
 };
 
 #endif //SNAKE_POSITION_HPP
