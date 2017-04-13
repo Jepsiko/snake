@@ -45,7 +45,6 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
     SDL_Event e;
     int* tmpWidth = new int(0);
     int* tmpHeight = new int(0);
-    SDL_Rect fillRect;
 
     while (not quit) {
 
@@ -141,14 +140,13 @@ void GameGUI::drawTail(const Snake* snake) {
     for (unsigned long i = snake->getTail().size(); i-- > 0; ) {
         int xOffset = 0;
         int yOffset = 0;
-        bool drew = false;
 
         pos = snake->getTail().at(i);
         before = snake->getTail().size() > i-1 ? snake->getTail().at(i-1) : NULL;
 
         if (before == NULL) {
-            drawRectOffset(snake->getPosition(), pos, 0, 0, 0x9F, 0xFF, 0x9F);
-            drew = true;
+            xOffset = OFFSET;
+            yOffset = OFFSET;
         } else {
             Position* nextDirection = *after - *pos;
             Position* postDirection = *before - *pos;
@@ -160,51 +158,61 @@ void GameGUI::drawTail(const Snake* snake) {
             else if ((*nextDirection == *LEFT and *postDirection == *RIGHT) or
                      (*nextDirection == *RIGHT and *postDirection == *LEFT)) {
                 yOffset = OFFSET;
-            }
-            else if ((*nextDirection == *LEFT and *postDirection == *UP) or
-                     (*nextDirection == *UP and *postDirection == *LEFT)) {
+            } else {
                 xOffset = OFFSET;
                 yOffset = OFFSET;
-
                 Position* pos1 = new Position();
-                pos1->x = width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS + xOffset/2;
-                pos1->y = height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS;
-
                 Position* pos2 = new Position();
-                pos2->x = width/2 + (pos->x+1 - snake->getPosition()->x)*IMAGE_SIZE_PIXELS - xOffset/2;
-                pos2->y = height/2 + (pos->y+1 - snake->getPosition()->y)*IMAGE_SIZE_PIXELS - yOffset/2;
 
-                drawRect(pos1, pos2, 0x9F, 0xFF, 0x9F);
+                int x1 = width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS;
+                int y1 = height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS;
+                int x2 = width/2 + (pos->x+1 - snake->getPosition()->x)*IMAGE_SIZE_PIXELS;
+                int y2 = height/2 + (pos->y+1 - snake->getPosition()->y)*IMAGE_SIZE_PIXELS;
 
-                pos1->x = width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS;
-                pos1->y = height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS + yOffset/2;
+                if (*nextDirection == *LEFT or *postDirection == *LEFT) {
 
-                pos2->x = width/2 + (pos->x+1 - snake->getPosition()->x)*IMAGE_SIZE_PIXELS - xOffset/2;
-                pos2->y = height/2 + (pos->y+1 - snake->getPosition()->y)*IMAGE_SIZE_PIXELS - yOffset/2;
+                    pos1->x = x1;
+                    pos1->y = y1 + yOffset/2;
 
-                drawRect(pos1, pos2, 0x9F, 0xFF, 0x9F);
-            }
-            else if ((*nextDirection == *LEFT and *postDirection == *DOWN) or
-                     (*nextDirection == *DOWN and *postDirection == *LEFT)) {
+                    pos2->x = x2 - xOffset/2;
+                    pos2->y = y2 - yOffset/2;
 
-                xOffset = OFFSET;
-                yOffset = OFFSET;
-            }
-            else if ((*nextDirection == *RIGHT and *postDirection == *UP) or
-                     (*nextDirection == *UP and *postDirection == *RIGHT)) {
+                    drawRect(pos1, pos2, 0x9F, 0xFF, 0x9F);
+                }
+                if (*nextDirection == *UP or *postDirection == *UP) {
 
-                xOffset = OFFSET;
-                yOffset = OFFSET;
-            }
-            else if ((*nextDirection == *RIGHT and *postDirection == *DOWN) or
-                     (*nextDirection == *DOWN and *postDirection == *RIGHT)) {
+                    pos1->x = x1 + xOffset/2;
+                    pos1->y = y1;
 
-                xOffset = OFFSET;
-                yOffset = OFFSET;
+                    pos2->x = x2 - xOffset/2;
+                    pos2->y = y2 - yOffset/2;
+
+                    drawRect(pos1, pos2, 0x9F, 0xFF, 0x9F);
+                }
+                if (*nextDirection == *RIGHT or *postDirection == *RIGHT) {
+
+                    pos1->x = x2 - xOffset/2;
+                    pos1->y = y1 + yOffset/2;
+
+                    pos2->x = x2;
+                    pos2->y = y2 - yOffset/2;
+
+                    drawRect(pos1, pos2, 0x9F, 0xFF, 0x9F);
+                }
+                if (*nextDirection == *DOWN or *postDirection == *DOWN) {
+
+                    pos1->x = x1 + xOffset/2;
+                    pos1->y = y2 - yOffset/2;
+
+                    pos2->x = x2 - xOffset/2;
+                    pos2->y = y2;
+
+                    drawRect(pos1, pos2, 0x9F, 0xFF, 0x9F);
+                }
             }
         }
 
-        if (not drew) drawRectOffset(snake->getPosition(), pos, xOffset, yOffset, 0x9F, 0xFF, 0x9F);
+        drawRectOffset(snake->getPosition(), pos, xOffset, yOffset, 0x9F, 0xFF, 0x9F);
         after = pos;
     }
 }

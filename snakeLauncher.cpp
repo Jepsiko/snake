@@ -5,7 +5,6 @@
 
 int main(int argc, char **argv) {
 
-    /*
     if (argc == 2) {
         if (strcmp(argv[1], "-c") == 0 or strcmp(argv[1], "--console") == 0) {
             isConsole = true;
@@ -14,7 +13,6 @@ int main(int argc, char **argv) {
 
     GameManager* game = new GameManager();
     game->run();
-    */
 
     return 0;
 }
