@@ -1,10 +1,11 @@
 
 
 #include "Snake.hpp"
+#include "../Tools/Constants.hpp"
 #include <algorithm>
 
 Snake::Snake(Position *startPos) {
-    lenght = 5;
+    length = INITIAL_LENGTH;
     head = startPos;
     direction = new Position(1, 0);
     tmpDirection = new Position(1, 0);
@@ -35,7 +36,7 @@ bool Snake::move() {
     if (dead) logFile << "\nDEAD";
     else {
         tail.push_back(head);
-        if (tail.size() > lenght) tail.erase(tail.begin());
+        if (tail.size() > length) tail.erase(tail.begin());
         head = nextPos;
     }
 
@@ -57,7 +58,7 @@ void Snake::changeDirection() {
 }
 
 void Snake::grow() {
-    lenght++;
+    length++;
 }
 
 bool Snake::onSnake(Position *position) {

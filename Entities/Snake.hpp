@@ -11,7 +11,7 @@ class Snake {
 private:
     Position* head;
     std::vector<Position*> tail;
-    int lenght;
+    int length;
     Position* direction;
     Position* tmpDirection;
 

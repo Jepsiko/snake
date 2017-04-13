@@ -12,4 +12,6 @@ const int TIME_BETWEEN_STEPS = 250; // In milliseconds
 const int IMAGE_SIZE_PIXELS = 20;
 const int OFFSET = 4;
 
+const int INITIAL_LENGTH = 5;
+
 #endif //SNAKE_CONSTANTS_HPP
