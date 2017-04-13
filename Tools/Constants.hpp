@@ -10,5 +10,6 @@ const int SCREEN_HEIGHT = 480;
 const int TIME_BETWEEN_STEPS = 250; // In milliseconds
 
 const int IMAGE_SIZE_PIXELS = 20;
+const int OFFSET = 4;
 
 #endif //SNAKE_CONSTANTS_HPP

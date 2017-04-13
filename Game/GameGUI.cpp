@@ -63,28 +63,14 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
             SDL_RenderClear(gRenderer);
 
             // Draw the snake's head
-            fillRect = {width/2,
-                        height/2,
-                        IMAGE_SIZE_PIXELS, IMAGE_SIZE_PIXELS};
-            SDL_SetRenderDrawColor(gRenderer, 0x00, 0xFF, 0x00, 0xFF); // GREEN
-            SDL_RenderFillRect(gRenderer, &fillRect);
+            drawRectOffset(snake->getPosition(), snake->getPosition(), 0, 0, 0x00, 0xFF, 0x00);
 
             // Draw the snake's tail
-            for (auto pos : snake->getTail()) {
-                fillRect = {width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS,
-                            height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS,
-                            IMAGE_SIZE_PIXELS, IMAGE_SIZE_PIXELS};
-                SDL_SetRenderDrawColor(gRenderer, 0x9F, 0xFF, 0x9F, 0xFF); // DARK GREEN
-                SDL_RenderFillRect(gRenderer, &fillRect);
-            }
+            drawTail(snake);
 
             // Draw the food
             for (auto cherry : food) {
-                fillRect = {width/2 + (cherry->getPosition()->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS,
-                            height/2 + (cherry->getPosition()->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS,
-                            IMAGE_SIZE_PIXELS, IMAGE_SIZE_PIXELS};
-                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF); // RED
-                SDL_RenderFillRect(gRenderer, &fillRect);
+                drawRectOffset(snake->getPosition(), cherry->getPosition(), 4, 4, 0xFF, 0x00, 0x00);
             }
 
             SDL_RenderPresent(gRenderer);
@@ -140,3 +126,106 @@ void GameGUI::close() {
 }
 
 GameGUI::GameGUI(GameManager *manager) : GameUI(manager) {}
+
+void GameGUI::drawTail(const Snake* snake) {
+    // Directions
+    const Position* UP = new Position(0, -1);
+    const Position* DOWN = new Position(0, 1);
+    const Position* RIGHT = new Position(1, 0);
+    const Position* LEFT = new Position(-1, 0);
+
+    Position* after = (Position *) snake->getPosition();
+    Position* before;
+    Position* pos;
+
+    for (unsigned long i = snake->getTail().size(); i-- > 0; ) {
+        int xOffset = 0;
+        int yOffset = 0;
+        bool drew = false;
+
+        pos = snake->getTail().at(i);
+        before = snake->getTail().size() > i-1 ? snake->getTail().at(i-1) : NULL;
+
+        if (before == NULL) {
+            drawRectOffset(snake->getPosition(), pos, 0, 0, 0x9F, 0xFF, 0x9F);
+            drew = true;
+        } else {
+            Position* nextDirection = *after - *pos;
+            Position* postDirection = *before - *pos;
+
+            if ((*nextDirection == *UP and *postDirection == *DOWN) or
+                (*nextDirection == *DOWN and *postDirection == *UP)) {
+                xOffset = OFFSET;
+            }
+            else if ((*nextDirection == *LEFT and *postDirection == *RIGHT) or
+                     (*nextDirection == *RIGHT and *postDirection == *LEFT)) {
+                yOffset = OFFSET;
+            }
+            else if ((*nextDirection == *LEFT and *postDirection == *UP) or
+                     (*nextDirection == *UP and *postDirection == *LEFT)) {
+                xOffset = OFFSET;
+                yOffset = OFFSET;
+
+                Position* pos1 = new Position();
+                pos1->x = width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS + xOffset/2;
+                pos1->y = height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS;
+
+                Position* pos2 = new Position();
+                pos2->x = width/2 + (pos->x+1 - snake->getPosition()->x)*IMAGE_SIZE_PIXELS - xOffset/2;
+                pos2->y = height/2 + (pos->y+1 - snake->getPosition()->y)*IMAGE_SIZE_PIXELS - yOffset/2;
+
+                drawRect(pos1, pos2, 0x9F, 0xFF, 0x9F);
+
+                pos1->x = width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS;
+                pos1->y = height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS + yOffset/2;
+
+                pos2->x = width/2 + (pos->x+1 - snake->getPosition()->x)*IMAGE_SIZE_PIXELS - xOffset/2;
+                pos2->y = height/2 + (pos->y+1 - snake->getPosition()->y)*IMAGE_SIZE_PIXELS - yOffset/2;
+
+                drawRect(pos1, pos2, 0x9F, 0xFF, 0x9F);
+            }
+            else if ((*nextDirection == *LEFT and *postDirection == *DOWN) or
+                     (*nextDirection == *DOWN and *postDirection == *LEFT)) {
+
+                xOffset = OFFSET;
+                yOffset = OFFSET;
+            }
+            else if ((*nextDirection == *RIGHT and *postDirection == *UP) or
+                     (*nextDirection == *UP and *postDirection == *RIGHT)) {
+
+                xOffset = OFFSET;
+                yOffset = OFFSET;
+            }
+            else if ((*nextDirection == *RIGHT and *postDirection == *DOWN) or
+                     (*nextDirection == *DOWN and *postDirection == *RIGHT)) {
+
+                xOffset = OFFSET;
+                yOffset = OFFSET;
+            }
+        }
+
+        if (not drew) drawRectOffset(snake->getPosition(), pos, xOffset, yOffset, 0x9F, 0xFF, 0x9F);
+        after = pos;
+    }
+}
+
+void GameGUI::drawRectOffset(const Position *snakePos, const Position *position, int widthOffset, int heightOffset,
+                             Uint8 r, Uint8 g, Uint8 b) {
+    SDL_Rect fillRect;
+    fillRect = {width/2 + (position->x - snakePos->x)*IMAGE_SIZE_PIXELS + widthOffset/2,
+                height/2 + (position->y - snakePos->y)*IMAGE_SIZE_PIXELS + heightOffset/2,
+                IMAGE_SIZE_PIXELS - widthOffset, IMAGE_SIZE_PIXELS - heightOffset};
+    SDL_SetRenderDrawColor(gRenderer, r, g, b, 0xFF);
+    SDL_RenderFillRect(gRenderer, &fillRect);
+}
+
+void GameGUI::drawRect(const Position *position1, const Position *position2,
+                             Uint8 r, Uint8 g, Uint8 b) {
+    SDL_Rect fillRect;
+    fillRect = {position1->x,
+                position1->y,
+                position2->x - position1->x,
+                position2->y - position1->y};
+    SDL_SetRenderDrawColor(gRenderer, r, g, b, 0xFF);
+    SDL_RenderFillRect(gRenderer, &fillRect);
+}

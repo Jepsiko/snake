@@ -3,12 +3,6 @@
 #include "GameCUI.hpp"
 #include "../Tools/Constants.hpp"
 
-// Directions
-const Position* UP = new Position(0, -1);
-const Position* DOWN = new Position(0, 1);
-const Position* RIGHT = new Position(1, 0);
-const Position* LEFT = new Position(-1, 0);
-
 bool GameCUI::init() {
     try {
         initscr();
@@ -94,6 +88,12 @@ void GameCUI::close() {
 GameCUI::GameCUI(GameManager *manager) : GameUI(manager) {}
 
 void GameCUI::drawTail(const Snake* snake) {
+    // Directions
+    const Position* UP = new Position(0, -1);
+    const Position* DOWN = new Position(0, 1);
+    const Position* RIGHT = new Position(1, 0);
+    const Position* LEFT = new Position(-1, 0);
+
     Position* after = (Position *) snake->getPosition();
     Position* before;
     Position* pos;

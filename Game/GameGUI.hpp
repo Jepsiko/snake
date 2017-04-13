@@ -16,6 +16,14 @@ private:
     SDL_Renderer* gRenderer = NULL;
     bool fullscreen;
 
+    void drawTail(const Snake* snake);
+
+    void drawRectOffset(const Position *snakePos, const Position *position, int widthOffset, int heightOffset, Uint8 r,
+                        Uint8 g, Uint8 b);
+
+    void drawRect(const Position *position, const Position *position2,
+                  Uint8 r, Uint8 g, Uint8 b);
+
 public:
     GameGUI(GameManager *manager);
 
