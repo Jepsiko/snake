@@ -3,6 +3,12 @@
 #include "GameCUI.hpp"
 #include "../Tools/Constants.hpp"
 
+// Directions
+const Position* UP = new Position(0, -1);
+const Position* DOWN = new Position(0, 1);
+const Position* RIGHT = new Position(1, 0);
+const Position* LEFT = new Position(-1, 0);
+
 bool GameCUI::init() {
     try {
         initscr();
@@ -41,24 +47,65 @@ void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
                     '#');
 
             // Draw the snake's tail
-            unsigned long count = snake->getTail().size();
-            Position* before = (Position *) snake->getPosition();
-            Position* after;
-            for (auto pos : snake->getTail()) {
-                after = snake->getTail().size() > count ? snake->getTail().at(count) : NULL;
+            Position* after = (Position *) snake->getPosition();
+            Position* before;
+            Position* pos;
+            for (unsigned long i = snake->getTail().size(); i-- > 0; ) {
+                pos = snake->getTail().at(i);
+                before = snake->getTail().size() > i-1 ? snake->getTail().at(i-1) : NULL;
 
-                if (after == NULL) {
+                if (before == NULL) {
                     mvaddch(height/2 + pos->y - snake->getPosition()->y,
                             width/2 + pos->x - snake->getPosition()->x,
                             '*');
                 } else {
-                    mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                            width/2 + pos->x - snake->getPosition()->x,
-                            ACS_HLINE);
+                    Position* nextDirection = *after - *pos;
+                    Position* postDirection = *before - *pos;
+
+                    logFile << pos->to_string() << " ";
+                    logFile << after->to_string() << " ";;
+                    logFile << nextDirection->to_string() << " ";
+                    logFile << before->to_string() << " ";
+                    logFile << postDirection->to_string() << "\n";
+
+                    if ((*nextDirection == *UP and *postDirection == *DOWN) or
+                            (*nextDirection == *DOWN and *postDirection == *UP)) {
+                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                                width/2 + pos->x - snake->getPosition()->x,
+                                ACS_VLINE);
+                    } else if ((*nextDirection == *LEFT and *postDirection == *RIGHT) or
+                              (*nextDirection == *RIGHT and *postDirection == *LEFT)) {
+                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                                width/2 + pos->x - snake->getPosition()->x,
+                                ACS_HLINE);
+                    } else if ((*nextDirection == *LEFT and *postDirection == *UP) or
+                               (*nextDirection == *UP and *postDirection == *LEFT)) {
+                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                                width/2 + pos->x - snake->getPosition()->x,
+                                ACS_LRCORNER);
+                    } else if ((*nextDirection == *LEFT and *postDirection == *DOWN) or
+                              (*nextDirection == *DOWN and *postDirection == *LEFT)) {
+                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                                width/2 + pos->x - snake->getPosition()->x,
+                                ACS_URCORNER);
+                    } else if ((*nextDirection == *RIGHT and *postDirection == *UP) or
+                               (*nextDirection == *UP and *postDirection == *RIGHT)) {
+                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                                width/2 + pos->x - snake->getPosition()->x,
+                                ACS_LLCORNER);
+                    } else if ((*nextDirection == *RIGHT and *postDirection == *DOWN) or
+                               (*nextDirection == *DOWN and *postDirection == *RIGHT)) {
+                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                                width/2 + pos->x - snake->getPosition()->x,
+                                ACS_ULCORNER);
+                    } else {
+                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
+                                width/2 + pos->x - snake->getPosition()->x,
+                                'x');
+                    }
                 }
 
-                before = pos;
-                count--;
+                after = pos;
             }
 
             // Draw the food
