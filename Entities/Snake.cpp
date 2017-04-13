@@ -53,7 +53,6 @@ const std::vector<Position *> &Snake::getTail() const {
 }
 
 void Snake::changeDirection() {
-    if (*(*direction + *tmpDirection) == Position()) return; // If it's an opposite direction
     this->direction = new Position(tmpDirection->x, tmpDirection->y);
 }
 
@@ -80,5 +79,6 @@ bool Snake::onSnake(Position *position) {
 }
 
 void Snake::setTmpDirection(const Position *direction) {
+    if (*(*direction + *this->direction) == Position()) return; // If it's an opposite direction
     this->tmpDirection = new Position(direction->x, direction->y);
 }

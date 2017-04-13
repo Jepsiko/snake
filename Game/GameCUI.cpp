@@ -42,18 +42,14 @@ void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
             else quit = true;
 
             // Draw the snake's head
-            mvaddch(height/2,
-                    width/2,
-                    '#');
+            drawCell(snake->getPosition(), snake->getPosition(), '#');
 
             // Draw the snake's tail
             drawTail(snake);
 
             // Draw the food
             for (auto cherry : food) {
-                mvaddch(height/2 + cherry->getPosition()->y - snake->getPosition()->y,
-                        width/2 + cherry->getPosition()->x - snake->getPosition()->x,
-                        'O');
+                drawCell(snake->getPosition(), cherry->getPosition(), 'O');
             }
 
             refresh();
@@ -101,7 +97,7 @@ void GameCUI::drawTail(const Snake* snake) {
     Position* after = (Position *) snake->getPosition();
     Position* before;
     Position* pos;
-    chtype part = 'x';
+    chtype part = '?';
 
     for (unsigned long i = snake->getTail().size(); i-- > 0; ) {
         pos = snake->getTail().at(i);
@@ -139,12 +135,12 @@ void GameCUI::drawTail(const Snake* snake) {
             }
         }
 
-        drawCell((Position *) snake->getPosition(), pos, part);
+        drawCell(snake->getPosition(), pos, part);
         after = pos;
     }
 }
 
-void GameCUI::drawCell(Position* snakePos, Position *position, chtype part) {
+void GameCUI::drawCell(const Position* snakePos, const Position *position, chtype part) {
     mvaddch(height/2 + position->y - snakePos->y,
             width/2 + position->x - snakePos->x,
             part);
