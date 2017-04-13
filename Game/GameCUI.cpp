@@ -47,66 +47,7 @@ void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
                     '#');
 
             // Draw the snake's tail
-            Position* after = (Position *) snake->getPosition();
-            Position* before;
-            Position* pos;
-            for (unsigned long i = snake->getTail().size(); i-- > 0; ) {
-                pos = snake->getTail().at(i);
-                before = snake->getTail().size() > i-1 ? snake->getTail().at(i-1) : NULL;
-
-                if (before == NULL) {
-                    mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                            width/2 + pos->x - snake->getPosition()->x,
-                            '*');
-                } else {
-                    Position* nextDirection = *after - *pos;
-                    Position* postDirection = *before - *pos;
-
-                    logFile << pos->to_string() << " ";
-                    logFile << after->to_string() << " ";;
-                    logFile << nextDirection->to_string() << " ";
-                    logFile << before->to_string() << " ";
-                    logFile << postDirection->to_string() << "\n";
-
-                    if ((*nextDirection == *UP and *postDirection == *DOWN) or
-                            (*nextDirection == *DOWN and *postDirection == *UP)) {
-                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                                width/2 + pos->x - snake->getPosition()->x,
-                                ACS_VLINE);
-                    } else if ((*nextDirection == *LEFT and *postDirection == *RIGHT) or
-                              (*nextDirection == *RIGHT and *postDirection == *LEFT)) {
-                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                                width/2 + pos->x - snake->getPosition()->x,
-                                ACS_HLINE);
-                    } else if ((*nextDirection == *LEFT and *postDirection == *UP) or
-                               (*nextDirection == *UP and *postDirection == *LEFT)) {
-                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                                width/2 + pos->x - snake->getPosition()->x,
-                                ACS_LRCORNER);
-                    } else if ((*nextDirection == *LEFT and *postDirection == *DOWN) or
-                              (*nextDirection == *DOWN and *postDirection == *LEFT)) {
-                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                                width/2 + pos->x - snake->getPosition()->x,
-                                ACS_URCORNER);
-                    } else if ((*nextDirection == *RIGHT and *postDirection == *UP) or
-                               (*nextDirection == *UP and *postDirection == *RIGHT)) {
-                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                                width/2 + pos->x - snake->getPosition()->x,
-                                ACS_LLCORNER);
-                    } else if ((*nextDirection == *RIGHT and *postDirection == *DOWN) or
-                               (*nextDirection == *DOWN and *postDirection == *RIGHT)) {
-                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                                width/2 + pos->x - snake->getPosition()->x,
-                                ACS_ULCORNER);
-                    } else {
-                        mvaddch(height/2 + pos->y - snake->getPosition()->y,
-                                width/2 + pos->x - snake->getPosition()->x,
-                                'x');
-                    }
-                }
-
-                after = pos;
-            }
+            drawTail(snake);
 
             // Draw the food
             for (auto cherry : food) {
@@ -155,3 +96,56 @@ void GameCUI::close() {
 }
 
 GameCUI::GameCUI(GameManager *manager) : GameUI(manager) {}
+
+void GameCUI::drawTail(const Snake* snake) {
+    Position* after = (Position *) snake->getPosition();
+    Position* before;
+    Position* pos;
+    chtype part = 'x';
+
+    for (unsigned long i = snake->getTail().size(); i-- > 0; ) {
+        pos = snake->getTail().at(i);
+        before = snake->getTail().size() > i-1 ? snake->getTail().at(i-1) : NULL;
+
+        if (before == NULL) {
+            part = '*';
+        } else {
+            Position* nextDirection = *after - *pos;
+            Position* postDirection = *before - *pos;
+
+            if ((*nextDirection == *UP and *postDirection == *DOWN) or
+                (*nextDirection == *DOWN and *postDirection == *UP)) {
+                part = ACS_VLINE;
+            }
+            else if ((*nextDirection == *LEFT and *postDirection == *RIGHT) or
+                       (*nextDirection == *RIGHT and *postDirection == *LEFT)) {
+                part = ACS_HLINE;
+            }
+            else if ((*nextDirection == *LEFT and *postDirection == *UP) or
+                       (*nextDirection == *UP and *postDirection == *LEFT)) {
+                part = ACS_LRCORNER;
+            }
+            else if ((*nextDirection == *LEFT and *postDirection == *DOWN) or
+                       (*nextDirection == *DOWN and *postDirection == *LEFT)) {
+                part = ACS_URCORNER;
+            }
+            else if ((*nextDirection == *RIGHT and *postDirection == *UP) or
+                       (*nextDirection == *UP and *postDirection == *RIGHT)) {
+                part = ACS_LLCORNER;
+            }
+            else if ((*nextDirection == *RIGHT and *postDirection == *DOWN) or
+                       (*nextDirection == *DOWN and *postDirection == *RIGHT)) {
+                part = ACS_ULCORNER;
+            }
+        }
+
+        drawCell((Position *) snake->getPosition(), pos, part);
+        after = pos;
+    }
+}
+
+void GameCUI::drawCell(Position* snakePos, Position *position, chtype part) {
+    mvaddch(height/2 + position->y - snakePos->y,
+            width/2 + position->x - snakePos->x,
+            part);
+}

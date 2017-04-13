@@ -9,6 +9,10 @@
 class GameManager;
 
 class GameCUI : public virtual AbstractCUI, public GameUI {
+private:
+    void drawTail(const Snake* snake);
+
+    void drawCell(Position* snakePos, Position* position, chtype part);
 
 public:
     GameCUI(GameManager *manager);
