@@ -15,32 +15,20 @@ bool Snake::move() {
     changeDirection();
     bool dead = false;
 
-    logFile << "Head : " << head->to_string().c_str();
-
-    logFile << "\nDirection : " << direction->to_string().c_str();
-
     Position* nextPos = *direction + *head;
-    logFile << "\nNext Pos : " << nextPos->to_string().c_str();
-
-    logFile << "\nTail : ";
     for (auto pos : tail) {
-        logFile << pos->to_string().c_str();
         if (not dead) {
             if (*pos == *nextPos) {
                 dead = true;
             }
         }
     }
-    logFile << "\n";
 
-    if (dead) logFile << "\nDEAD";
-    else {
+    if (not dead) {
         tail.push_back(head);
         if (tail.size() > length) tail.erase(tail.begin());
         head = nextPos;
     }
-
-    logFile << "\n";
 
     return dead;
 }

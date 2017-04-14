@@ -18,11 +18,10 @@ private:
 
     void drawTail(const Snake* snake);
 
-    void drawRectOffset(const Position *snakePos, const Position *position, int widthOffset, int heightOffset, Uint8 r,
-                        Uint8 g, Uint8 b);
+    void drawRectOffset(const Position *snakePos, const Position *position,
+                        int widthOffset, int heightOffset, Uint8 color[3]);
 
-    void drawRect(const Position *position, const Position *position2,
-                  Uint8 r, Uint8 g, Uint8 b);
+    void drawRect(const Position *position, const Position *position2, Uint8 color[3]);
 
 public:
     GameGUI(GameManager *manager);
