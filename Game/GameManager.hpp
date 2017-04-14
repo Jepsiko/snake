@@ -12,9 +12,12 @@ class GameUI;
 class GameManager : public AbstractManager {
 private:
     GameUI *gameUI;
-    Snake *snake;
-    bool gameOver;
+    unsigned long id;
+    std::vector<Snake*> snakes;
     std::vector<Food*> food;
+
+    bool gameOver;
+    int stepCount;
 
     void spawnFood();
 

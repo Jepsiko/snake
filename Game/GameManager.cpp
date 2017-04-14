@@ -7,12 +7,14 @@
 
 void GameManager::run() {
     if (gameUI->init()) {
-        gameUI->update(snake, food);
+        srand((unsigned) time(0));
+        gameUI->update(snakes, food);
     }
     gameUI->close();
 }
 
-GameManager::GameManager() : snake(new Snake(new Position())), gameOver(false) {
+GameManager::GameManager() : gameOver(false), id(0), stepCount(0) {
+    snakes.push_back(new Snake(new Position()));
     spawnFood();
     if (isConsole) gameUI = new GameCUI(this);
     else gameUI = new GameGUI(this);
@@ -43,53 +45,64 @@ void GameManager::handleDirection(char directionChar) {
             direction = new Position(0, 0);
             break;
     }
-    snake->setTmpDirection(direction);
+    snakes.at(id)->setTmpDirection(direction);
 }
 
 bool GameManager::play() {
     // TODO : test if snake->getPosition() + direction != other snake
     logFile << "Play\n";
-    if (not gameOver) gameOver = snake->move();
+    for (auto snake : snakes) {
+        if (not gameOver) gameOver = snake->move();
 
-    bool grow = false;
-    const Position* snakePos = snake->getPosition();
-    Position* cherryPos = new Position();
-    for (auto cherry : food) {
-        cherryPos = (Position *) cherry->getPosition();
-        if (*cherryPos == *snakePos) {
-            grow = true;
-            break;
+        bool grow = false;
+        const Position *snakePos = snake->getPosition();
+        Position *cherryPos = new Position();
+        for (auto cherry : food) {
+            cherryPos = (Position *) cherry->getPosition();
+            if (*cherryPos == *snakePos) {
+                grow = true;
+                break;
+            }
+        }
+        if (grow) {
+            snake->grow();
+            deleteFood(cherryPos);
         }
     }
-    if (grow) {
-        snake->grow();
-        deleteFood(cherryPos);
+
+    if (stepCount > STEP_COUNT_BETWEEN_FOOD_SPAWN) {
         spawnFood();
+        stepCount = 0;
     }
 
+    stepCount++;
     return gameOver;
 }
 
 void GameManager::spawnFood() {
-    srand((unsigned) time(0));
-    int range = 20;
-    int tries = 0;
+    int range;
+    int tries;
 
     Position* foodPos;
     int x;
     int y;
-    do {
-        if (tries >= 20) {
-            range++;
-            tries = 0;
-        }
-        x = snake->getPosition()->x + rand()%range - range/2;
-        y = snake->getPosition()->y + rand()%range - range/2;
-        foodPos = new Position(x, y);
-        tries++;
-    } while (snake->onSnake(foodPos));
 
-    food.push_back(new Food(foodPos));
+    for (auto snake : snakes) {
+        range = 20;
+        tries = 0;
+        do {
+            if (tries >= 20) {
+                range++;
+                tries = 0;
+            }
+            x = snake->getPosition()->x + rand() % range - range / 2;
+            y = snake->getPosition()->y + rand() % range - range / 2;
+            foodPos = new Position(x, y);
+            tries++;
+        } while (snake->onSnake(foodPos));
+
+        food.push_back(new Food(foodPos));
+    }
 }
 
 void GameManager::deleteFood(Position *foodPos) {

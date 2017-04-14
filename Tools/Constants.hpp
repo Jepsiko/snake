@@ -9,6 +9,7 @@ const int SCREEN_HEIGHT = 480;
 
 // Gameplay Constants
 const int TIME_BETWEEN_STEPS = 150; // In milliseconds
+const int STEP_COUNT_BETWEEN_FOOD_SPAWN = 30;
 const int INITIAL_LENGTH = 10;
 
 // GUI Constants

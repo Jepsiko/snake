@@ -40,7 +40,7 @@ bool GameGUI::init() {
     return success;
 }
 
-void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
+void GameGUI::update(const std::vector<Snake*>& snakes, const std::vector<Food*>& food) {
     bool quit = false;
     SDL_Event e;
     int* tmpWidth = new int(0);
@@ -64,21 +64,23 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
 
             Uint8 color[3];
 
-            // Draw the snake's tail
-            drawTail(snake);
+            for (auto snake : snakes) {
+                // Draw the snake's tail
+                drawTail(snake);
 
-            // Draw the snake's head
-            color[0] = snake->getR();
-            color[1] = snake->getG();
-            color[2] = snake->getB();
-            drawRectOffset(snake->getPosition(), snake->getPosition(), 0, 0, color);
+                // Draw the snake's head
+                color[0] = snake->getR();
+                color[1] = snake->getG();
+                color[2] = snake->getB();
+                drawRectOffset(snake->getPosition(), snake->getPosition(), 0, 0, color);
 
-            // Draw the food
-            color[0] = 0xFF;
-            color[1] = 0x00;
-            color[2] = 0x00;
-            for (auto cherry : food) {
-                drawRectOffset(snake->getPosition(), cherry->getPosition(), OFFSET, OFFSET, color);
+                // Draw the food
+                color[0] = 0xFF;
+                color[1] = 0x00;
+                color[2] = 0x00;
+                for (auto cherry : food) {
+                    drawRectOffset(snake->getPosition(), cherry->getPosition(), OFFSET, OFFSET, color);
+                }
             }
 
             SDL_RenderPresent(gRenderer);

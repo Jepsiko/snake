@@ -14,7 +14,7 @@ public:
 
     virtual bool init() = 0;
 
-    virtual void update(const Snake* snake, const std::vector<Food*>& food) = 0;
+    virtual void update(const std::vector<Snake*>& snakes, const std::vector<Food*>& food) = 0;
 
     virtual void close() = 0;
 };

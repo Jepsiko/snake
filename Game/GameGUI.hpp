@@ -28,7 +28,7 @@ public:
 
     bool init() override;
 
-    void update(const Snake* snake, const std::vector<Food*>&) override;
+    void update(const std::vector<Snake*>& snakes, const std::vector<Food*>&) override;
 
     void close() override;
 };

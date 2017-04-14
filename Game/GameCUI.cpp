@@ -22,7 +22,7 @@ bool GameCUI::init() {
     };
 }
 
-void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
+void GameCUI::update(const std::vector<Snake*>& snakes, const std::vector<Food*>& food) {
     bool quit = false;
     unsigned char color[3];
 
@@ -37,31 +37,33 @@ void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
             if (not manager->play()) timer->reset();
             else quit = true;
 
-            // Draw the snake's tail
-            drawTail(snake);
+            for (auto snake : snakes) {
+                // Draw the snake's tail
+                drawTail(snake);
 
-            // Draw the snake's head
-            color[0] = snake->getR();
-            color[1] = snake->getG();
-            color[2] = snake->getB();
-            init_color(COLOR_GREEN,
-                       (short) (color[0] * 1000 / 256),
-                       (short) (color[1] * 1000 / 256),
-                       (short) (color[2] * 1000 / 256));
-            init_pair(1, COLOR_GREEN, COLOR_BLACK);
-            drawCell(snake->getPosition(), snake->getPosition(), '#', 1);
+                // Draw the snake's head
+                color[0] = snake->getR();
+                color[1] = snake->getG();
+                color[2] = snake->getB();
+                init_color(COLOR_GREEN,
+                           (short) (color[0] * 1000 / 256),
+                           (short) (color[1] * 1000 / 256),
+                           (short) (color[2] * 1000 / 256));
+                init_pair(1, COLOR_GREEN, COLOR_BLACK);
+                drawCell(snake->getPosition(), snake->getPosition(), '#', 1);
 
-            // Draw the food
-            color[0] = 0xFF;
-            color[1] = 0x00;
-            color[2] = 0x00;
-            init_color(COLOR_RED,
-                       (short) (color[0] * 1000 / 256),
-                       (short) (color[1] * 1000 / 256),
-                       (short) (color[2] * 1000 / 256));
-            init_pair(2, COLOR_RED, COLOR_BLACK);
-            for (auto cherry : food) {
-                drawCell(snake->getPosition(), cherry->getPosition(), 'O', 2);
+                // Draw the food
+                color[0] = 0xFF;
+                color[1] = 0x00;
+                color[2] = 0x00;
+                init_color(COLOR_RED,
+                           (short) (color[0] * 1000 / 256),
+                           (short) (color[1] * 1000 / 256),
+                           (short) (color[2] * 1000 / 256));
+                init_pair(2, COLOR_RED, COLOR_BLACK);
+                for (auto cherry : food) {
+                    drawCell(snake->getPosition(), cherry->getPosition(), 'O', 2);
+                }
             }
 
             refresh();
