@@ -27,3 +27,6 @@ std::ofstream logFile(filename(), std::ios_base::app);
 
 int height;
 int width;
+
+int tileSize = 20;
+int offset;

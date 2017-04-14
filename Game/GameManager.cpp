@@ -15,7 +15,7 @@ GameManager::GameManager() : gameOver(false), id(0), stepCount(0) {
 void GameManager::run() {
     if (gameUI->init()) {
         srand((unsigned) time(0));
-        gameUI->update(snakes, food);
+        gameUI->update(id, snakes, food);
     }
     gameUI->close();
 }
@@ -88,7 +88,7 @@ void GameManager::spawnFood() {
     int y;
 
     for (auto snake : snakes) {
-        range = 20;
+        range = 40;
         tries = 0;
         do {
             if (tries >= 20) {

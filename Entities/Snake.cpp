@@ -48,7 +48,7 @@ void Snake::changeDirection() {
 }
 
 void Snake::grow() {
-    length++;
+    length += GROW_RATE;
 }
 
 bool Snake::onSnake(Position *position) {

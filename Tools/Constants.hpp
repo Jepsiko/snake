@@ -11,9 +11,6 @@ const int SCREEN_HEIGHT = 480;
 const int TIME_BETWEEN_STEPS = 150; // In milliseconds
 const int STEP_COUNT_BETWEEN_FOOD_SPAWN = 30;
 const int INITIAL_LENGTH = 10;
-
-// GUI Constants
-const int IMAGE_SIZE_PIXELS = 20;
-const int OFFSET = 4; // MUST BE EVEN
+const int GROW_RATE = 5;
 
 #endif //SNAKE_CONSTANTS_HPP

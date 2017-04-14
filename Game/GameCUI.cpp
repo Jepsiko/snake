@@ -22,7 +22,7 @@ bool GameCUI::init() {
     };
 }
 
-void GameCUI::update(const std::vector<Snake*>& snakes, const std::vector<Food*>& food) {
+void GameCUI::update(unsigned long id, const std::vector<Snake*>& snakes, const std::vector<Food*>& food) {
     bool quit = false;
     unsigned char color[3];
 

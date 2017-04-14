@@ -31,6 +31,7 @@ bool GameGUI::init() {
                 timer->reset();
                 gScreenSurface = SDL_GetWindowSurface(gWindow);
                 SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0xFF, 0xFF, 0xFF));
+                offset = tileSize/10*2;
             }
         }
     }
@@ -40,7 +41,7 @@ bool GameGUI::init() {
     return success;
 }
 
-void GameGUI::update(const std::vector<Snake*>& snakes, const std::vector<Food*>& food) {
+void GameGUI::update(unsigned long id, const std::vector<Snake*>& snakes, const std::vector<Food*>& food) {
     bool quit = false;
     SDL_Event e;
     int* tmpWidth = new int(0);
@@ -64,6 +65,8 @@ void GameGUI::update(const std::vector<Snake*>& snakes, const std::vector<Food*>
 
             Uint8 color[3];
 
+            Snake* mySnake = snakes.at(id);
+
             for (auto snake : snakes) {
                 // Draw the snake's tail
                 drawTail(snake);
@@ -72,14 +75,14 @@ void GameGUI::update(const std::vector<Snake*>& snakes, const std::vector<Food*>
                 color[0] = snake->getR();
                 color[1] = snake->getG();
                 color[2] = snake->getB();
-                drawRectOffset(snake->getPosition(), snake->getPosition(), 0, 0, color);
+                drawRectOffset(mySnake->getPosition(), snake->getPosition(), 0, 0, color);
 
                 // Draw the food
                 color[0] = 0xFF;
                 color[1] = 0x00;
                 color[2] = 0x00;
                 for (auto cherry : food) {
-                    drawRectOffset(snake->getPosition(), cherry->getPosition(), OFFSET, OFFSET, color);
+                    drawRectOffset(mySnake->getPosition(), cherry->getPosition(), offset, offset, color);
                 }
             }
 
@@ -87,39 +90,54 @@ void GameGUI::update(const std::vector<Snake*>& snakes, const std::vector<Food*>
         }
 
         while (SDL_PollEvent(&e) != 0) {
-            if (e.type == SDL_QUIT) {
-                quit = true;
-            } else if (e.type == SDL_KEYDOWN) {
-                switch(e.key.keysym.sym) {
-                    case SDLK_z: // 'Z' Key Code : UP
-                        manager->handleDirection('U');
-                        break;
+            switch (e.type) {
+                case SDL_QUIT:
+                    quit = true;
+                    break;
 
-                    case SDLK_s: // 'S' Key Code : DOWN
-                        manager->handleDirection('D');
-                        break;
+                case SDL_MOUSEWHEEL:
+                    if (e.wheel.y < 0 and tileSize >= 20)
+                        tileSize -= 2;
+                    else if (tileSize <= 40)
+                        tileSize += 2;
+                    offset = tileSize/10*2;
+                    break;
 
-                    case SDLK_d: // 'D' Key Code : RIGHT
-                        manager->handleDirection('R');
-                        break;
+                case SDL_KEYDOWN:
+                    switch(e.key.keysym.sym) {
+                        case SDLK_z: // 'Z' Key Code : UP
+                            manager->handleDirection('U');
+                            break;
 
-                    case SDLK_q: // 'Q' Key Code : LEFT
-                        manager->handleDirection('L');
-                        break;
+                        case SDLK_s: // 'S' Key Code : DOWN
+                            manager->handleDirection('D');
+                            break;
 
-                    case SDLK_ESCAPE:
-                        if (fullscreen) {
-                            SDL_SetWindowFullscreen(gWindow, 0);
-                            fullscreen = false;
-                        } else {
-                            SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
-                            fullscreen = true;
-                        }
-                        break;
+                        case SDLK_d: // 'D' Key Code : RIGHT
+                            manager->handleDirection('R');
+                            break;
 
-                    default:
-                        break;
-                }
+                        case SDLK_q: // 'Q' Key Code : LEFT
+                            manager->handleDirection('L');
+                            break;
+
+                        case SDLK_ESCAPE:
+                            if (fullscreen) {
+                                SDL_SetWindowFullscreen(gWindow, 0);
+                                fullscreen = false;
+                            } else {
+                                SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+                                fullscreen = true;
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
             }
         }
     }
@@ -164,8 +182,8 @@ void GameGUI::drawTail(const Snake* snake) {
             color[1] = (Uint8) (snake->getG() + 0x6F);
             color[2] = snake->getB();
 
-            xOffset = (int) (INITIAL_LENGTH + OFFSET - i / 2 * 2);
-            yOffset = (int) (INITIAL_LENGTH + OFFSET - i / 2 * 2);
+            xOffset = (int) ((INITIAL_LENGTH - i+1)/2*offset);
+            yOffset = (int) ((INITIAL_LENGTH - i+1)/2*offset);
         } else {
             color[0] = snake->getR();
             color[1] = (Uint8) (snake->getG() + 0x6F);
@@ -176,21 +194,21 @@ void GameGUI::drawTail(const Snake* snake) {
 
             if ((*nextDirection == *UP and *postDirection == *DOWN) or
                 (*nextDirection == *DOWN and *postDirection == *UP)) {
-                xOffset = OFFSET;
+                xOffset = offset;
             }
             else if ((*nextDirection == *LEFT and *postDirection == *RIGHT) or
                      (*nextDirection == *RIGHT and *postDirection == *LEFT)) {
-                yOffset = OFFSET;
+                yOffset = offset;
             } else {
-                xOffset = OFFSET;
-                yOffset = OFFSET;
+                xOffset = offset;
+                yOffset = offset;
                 Position* pos1 = new Position();
                 Position* pos2 = new Position();
 
-                int x1 = width/2 + (pos->x - snake->getPosition()->x)*IMAGE_SIZE_PIXELS;
-                int y1 = height/2 + (pos->y - snake->getPosition()->y)*IMAGE_SIZE_PIXELS;
-                int x2 = width/2 + (pos->x+1 - snake->getPosition()->x)*IMAGE_SIZE_PIXELS;
-                int y2 = height/2 + (pos->y+1 - snake->getPosition()->y)*IMAGE_SIZE_PIXELS;
+                int x1 = width/2 + (pos->x - snake->getPosition()->x)*tileSize;
+                int y1 = height/2 + (pos->y - snake->getPosition()->y)*tileSize;
+                int x2 = width/2 + (pos->x+1 - snake->getPosition()->x)*tileSize;
+                int y2 = height/2 + (pos->y+1 - snake->getPosition()->y)*tileSize;
 
                 if (*nextDirection == *LEFT or *postDirection == *LEFT) {
                     pos1->x = x1;
@@ -234,9 +252,9 @@ void GameGUI::drawTail(const Snake* snake) {
 void GameGUI::drawRectOffset(const Position *snakePos, const Position *position,
                              int widthOffset, int heightOffset, Uint8 color[3]) {
     SDL_Rect fillRect;
-    fillRect = {width/2 + (position->x - snakePos->x)*IMAGE_SIZE_PIXELS + widthOffset/2,
-                height/2 + (position->y - snakePos->y)*IMAGE_SIZE_PIXELS + heightOffset/2,
-                IMAGE_SIZE_PIXELS - widthOffset, IMAGE_SIZE_PIXELS - heightOffset};
+    fillRect = {width/2 + (position->x - snakePos->x)*tileSize + widthOffset/2,
+                height/2 + (position->y - snakePos->y)*tileSize + heightOffset/2,
+                tileSize - widthOffset, tileSize - heightOffset};
     SDL_SetRenderDrawColor(gRenderer, color[0], color[1], color[2], 0xFF);
     SDL_RenderFillRect(gRenderer, &fillRect);
 }
