@@ -37,6 +37,8 @@ void GameCUI::update(unsigned long id, const std::vector<Snake*>& snakes, const 
             if (not manager->play()) timer->reset();
             else quit = true;
 
+            Snake* mySnake = snakes.at(id);
+
             for (auto snake : snakes) {
                 // Draw the snake's tail
                 drawTail(snake);
@@ -50,7 +52,7 @@ void GameCUI::update(unsigned long id, const std::vector<Snake*>& snakes, const 
                            (short) (color[1] * 1000 / 256),
                            (short) (color[2] * 1000 / 256));
                 init_pair(1, COLOR_GREEN, COLOR_BLACK);
-                drawCell(snake->getPosition(), snake->getPosition(), '#', 1);
+                drawCell(mySnake->getPosition(), snake->getPosition(), '#', 1);
 
                 // Draw the food
                 color[0] = 0xFF;
@@ -62,7 +64,7 @@ void GameCUI::update(unsigned long id, const std::vector<Snake*>& snakes, const 
                            (short) (color[2] * 1000 / 256));
                 init_pair(2, COLOR_RED, COLOR_BLACK);
                 for (auto cherry : food) {
-                    drawCell(snake->getPosition(), cherry->getPosition(), 'O', 2);
+                    drawCell(mySnake->getPosition(), cherry->getPosition(), 'O', 2);
                 }
             }
 
@@ -148,7 +150,7 @@ void GameCUI::drawTail(const Snake* snake) {
 
         if (i < INITIAL_LENGTH) {
             color_pair = 3;
-            part = '*';
+            part = 'o';
         } else {
             color_pair = 4;
             Position* nextDirection = *after - *pos;
@@ -181,7 +183,6 @@ void GameCUI::drawTail(const Snake* snake) {
         }
 
         drawCell(snake->getPosition(), pos, part, color_pair);
-        after = pos;
     }
 }
 
