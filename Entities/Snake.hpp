@@ -6,6 +6,7 @@
 
 #include <vector>
 #include "../Position.hpp"
+#include <array>
 
 class Snake {
 private:
@@ -14,6 +15,10 @@ private:
     int length;
     Position* direction;
     Position* tmpDirection;
+
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
 
     void changeDirection();
 
@@ -31,6 +36,14 @@ public:
     const std::vector<Position*>& getTail() const;
 
     void setTmpDirection(const Position* direction);
+
+    int getLength() const;
+
+    unsigned char getR() const;
+
+    unsigned char getG() const;
+
+    unsigned char getB() const;
 };
 
 

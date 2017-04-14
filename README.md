@@ -12,3 +12,5 @@ Play in graphic mode : `./Snake`
 
 # Recent changes
 - Graphic mode
+- We can see the path taken by the snake
+- The snake has a random color

@@ -64,14 +64,14 @@ void GameGUI::update(const Snake* snake, const std::vector<Food*>& food) {
 
             Uint8 color[3];
 
-            // Draw the snake's head
-            color[0] = 0x00;
-            color[1] = 0x90;
-            color[2] = 0x00;
-            drawRectOffset(snake->getPosition(), snake->getPosition(), 0, 0, color);
-
             // Draw the snake's tail
             drawTail(snake);
+
+            // Draw the snake's head
+            color[0] = snake->getR();
+            color[1] = snake->getG();
+            color[2] = snake->getB();
+            drawRectOffset(snake->getPosition(), snake->getPosition(), 0, 0, color);
 
             // Draw the food
             color[0] = 0xFF;
@@ -155,20 +155,18 @@ void GameGUI::drawTail(const Snake* snake) {
         pos = snake->getTail().at(i);
         before = snake->getTail().size() > i-1 ? snake->getTail().at(i-1) : NULL;
 
-        if (i >= INITIAL_LENGTH) {
-            color[0] = 0x00;
-            color[1] = 0xFF;
-            color[2] = 0x00;
-        } else {
-            color[0] = 0xFF;
-            color[1] = 0x00;
-            color[2] = 0x00;
-        }
+        if (i < INITIAL_LENGTH) {
+            color[0] = (Uint8) (snake->getR() + 0x60);
+            color[1] = (Uint8) (snake->getG() + 0x6F);
+            color[2] = snake->getB();
 
-        if (before == NULL) {
             xOffset = OFFSET;
             yOffset = OFFSET;
         } else {
+            color[0] = snake->getR();
+            color[1] = (Uint8) (snake->getG() + 0x6F);
+            color[2] = snake->getB();
+
             Position* nextDirection = *after - *pos;
             Position* postDirection = *before - *pos;
 

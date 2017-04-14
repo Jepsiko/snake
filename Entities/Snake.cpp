@@ -5,10 +5,14 @@
 #include <algorithm>
 
 Snake::Snake(Position *startPos) {
+    srand((unsigned) time(0));
     length = INITIAL_LENGTH;
     head = startPos;
     direction = new Position(1, 0);
     tmpDirection = new Position(1, 0);
+    r = (unsigned char) ((unsigned char) rand() % 0x60);
+    g = (unsigned char) ((unsigned char) rand() % 0x90);
+    b = (unsigned char) rand();
 }
 
 bool Snake::move() {
@@ -16,11 +20,9 @@ bool Snake::move() {
     bool dead = false;
 
     Position* nextPos = *direction + *head;
-    for (auto pos : tail) {
-        if (not dead) {
-            if (*pos == *nextPos) {
-                dead = true;
-            }
+    for (unsigned long i = tail.size(); i-- > 0; ) {
+        if (i >= INITIAL_LENGTH && not dead && *tail.at(i) == *nextPos) {
+            dead = true;
         }
     }
 
@@ -70,4 +72,20 @@ bool Snake::onSnake(Position *position) {
 void Snake::setTmpDirection(const Position *direction) {
     if (*(*direction + *this->direction) == Position()) return; // If it's an opposite direction
     this->tmpDirection = new Position(direction->x, direction->y);
+}
+
+int Snake::getLength() const {
+    return length;
+}
+
+unsigned char Snake::getR() const {
+    return r;
+}
+
+unsigned char Snake::getG() const {
+    return g;
+}
+
+unsigned char Snake::getB() const {
+    return b;
 }
