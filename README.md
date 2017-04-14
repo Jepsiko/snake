@@ -7,10 +7,10 @@ Play in console mode : `./Snake -c` or `./Snake --console`
 Play in graphic mode : `./Snake`
 
 # Future changes
-- The end of the snake's tail can be passed through
 - Multiplayer mode
 
 # Recent changes
 - Graphic mode
 - We can see the path taken by the snake
 - The snake has a random color
+- The end of the snake's tail can be passed through

@@ -144,16 +144,18 @@ void GameGUI::drawTail(const Snake* snake) {
 
     Uint8 color[3];
 
-    Position* after = (Position *) snake->getPosition();
+    Position* after;
     Position* before;
     Position* pos;
 
-    for (unsigned long i = snake->getTail().size(); i-- > 0; ) {
+    for (unsigned long i = 0; i < snake->getTail().size(); i++) {
+
         int xOffset = 0;
         int yOffset = 0;
 
         pos = snake->getTail().at(i);
-        before = snake->getTail().size() > i-1 ? snake->getTail().at(i-1) : NULL;
+        after = snake->getTail().size() > i-1 ? snake->getTail().at(i-1) : NULL;
+        before = snake->getTail().size() > i+1 ? snake->getTail().at(i+1) : (Position*) snake->getPosition();
 
         if (i < INITIAL_LENGTH) {
             color[0] = (Uint8) (snake->getR() + 0x60);
@@ -224,7 +226,6 @@ void GameGUI::drawTail(const Snake* snake) {
         }
 
         drawRectOffset(snake->getPosition(), pos, xOffset, yOffset, color);
-        after = pos;
     }
 }
 
