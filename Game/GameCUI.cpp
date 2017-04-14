@@ -11,6 +11,7 @@ bool GameCUI::init() {
         scrollok(stdscr, TRUE);
         nodelay(stdscr, TRUE);
         curs_set(0);
+        start_color();
 
         timer->reset();
         return true;
@@ -23,6 +24,7 @@ bool GameCUI::init() {
 
 void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
     bool quit = false;
+    unsigned char color[3];
 
     while(not quit) {
         // Play every TIME_BETWEEN_STEPS milliseconds
@@ -39,11 +41,27 @@ void GameCUI::update(const Snake* snake, const std::vector<Food*>& food) {
             drawTail(snake);
 
             // Draw the snake's head
-            drawCell(snake->getPosition(), snake->getPosition(), '#');
+            color[0] = snake->getR();
+            color[1] = snake->getG();
+            color[2] = snake->getB();
+            init_color(COLOR_GREEN,
+                       (short) (color[0] * 1000 / 256),
+                       (short) (color[1] * 1000 / 256),
+                       (short) (color[2] * 1000 / 256));
+            init_pair(1, COLOR_GREEN, COLOR_BLACK);
+            drawCell(snake->getPosition(), snake->getPosition(), '#', 1);
 
             // Draw the food
+            color[0] = 0xFF;
+            color[1] = 0x00;
+            color[2] = 0x00;
+            init_color(COLOR_RED,
+                       (short) (color[0] * 1000 / 256),
+                       (short) (color[1] * 1000 / 256),
+                       (short) (color[2] * 1000 / 256));
+            init_pair(2, COLOR_RED, COLOR_BLACK);
             for (auto cherry : food) {
-                drawCell(snake->getPosition(), cherry->getPosition(), 'O');
+                drawCell(snake->getPosition(), cherry->getPosition(), 'O', 2);
             }
 
             refresh();
@@ -94,6 +112,27 @@ void GameCUI::drawTail(const Snake* snake) {
     const Position* RIGHT = new Position(1, 0);
     const Position* LEFT = new Position(-1, 0);
 
+    unsigned char color[3];
+    int color_pair;
+
+    color[0] = (unsigned char) (snake->getR() + 0x60);
+    color[1] = (unsigned char) (snake->getG() + 0x6F);
+    color[2] = snake->getB();
+    init_color(COLOR_BLUE,
+               (short) (color[0] * 1000 / 256),
+               (short) (color[1] * 1000 / 256),
+               (short) (color[2] * 1000 / 256));
+    init_pair(3, COLOR_BLUE, COLOR_BLACK);
+
+    color[0] = snake->getR();
+    color[1] = (unsigned char) (snake->getG() + 0x6F);
+    color[2] = snake->getB();
+    init_color(COLOR_CYAN,
+               (short) (color[0] * 1000 / 256),
+               (short) (color[1] * 1000 / 256),
+               (short) (color[2] * 1000 / 256));
+    init_pair(4, COLOR_CYAN, COLOR_BLACK);
+
     Position* after = (Position *) snake->getPosition();
     Position* before;
     Position* pos;
@@ -103,9 +142,11 @@ void GameCUI::drawTail(const Snake* snake) {
         pos = snake->getTail().at(i);
         before = snake->getTail().size() > i-1 ? snake->getTail().at(i-1) : NULL;
 
-        if (before == NULL) {
+        if (i < INITIAL_LENGTH) {
+            color_pair = 3;
             part = '*';
         } else {
+            color_pair = 4;
             Position* nextDirection = *after - *pos;
             Position* postDirection = *before - *pos;
 
@@ -135,13 +176,15 @@ void GameCUI::drawTail(const Snake* snake) {
             }
         }
 
-        drawCell(snake->getPosition(), pos, part);
+        drawCell(snake->getPosition(), pos, part, color_pair);
         after = pos;
     }
 }
 
-void GameCUI::drawCell(const Position* snakePos, const Position *position, chtype part) {
+void GameCUI::drawCell(const Position* snakePos, const Position *position, chtype part, int color_pair) {
+    attron(COLOR_PAIR(color_pair));
     mvaddch(height/2 + position->y - snakePos->y,
             width/2 + position->x - snakePos->x,
             part);
+    attroff(COLOR_PAIR(color_pair));
 }
