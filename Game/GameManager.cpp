@@ -5,19 +5,19 @@
 #include "GameCUI.hpp"
 #include "GameGUI.hpp"
 
+GameManager::GameManager() : gameOver(false), id(0), stepCount(0) {
+    snakes.push_back(new Snake(new Position()));
+    spawnFood();
+    if (isConsole) gameUI = new GameCUI(this);
+    else gameUI = new GameGUI(this);
+}
+
 void GameManager::run() {
     if (gameUI->init()) {
         srand((unsigned) time(0));
         gameUI->update(snakes, food);
     }
     gameUI->close();
-}
-
-GameManager::GameManager() : gameOver(false), id(0), stepCount(0) {
-    snakes.push_back(new Snake(new Position()));
-    spawnFood();
-    if (isConsole) gameUI = new GameCUI(this);
-    else gameUI = new GameGUI(this);
 }
 
 void GameManager::handleDirection(char directionChar) {
