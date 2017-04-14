@@ -10,7 +10,7 @@ Play in graphic mode : `./Snake`
 - Multiplayer mode
 
 # Recent changes
-- Graphic mode
-- We can see the path taken by the snake
-- The snake has a random color
-- The end of the snake's tail can be passed through
+- 12/04/17 Graphic mode
+- 13/04/17 We can see the path taken by the snake
+- 14/04/17 The snake has a random color
+- 14/04/17 The end of the snake's tail can be passed through
