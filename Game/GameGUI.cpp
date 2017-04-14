@@ -162,8 +162,8 @@ void GameGUI::drawTail(const Snake* snake) {
             color[1] = (Uint8) (snake->getG() + 0x6F);
             color[2] = snake->getB();
 
-            xOffset = OFFSET;
-            yOffset = OFFSET;
+            xOffset = (int) (16 - i / 2 * 2);
+            yOffset = (int) (16 - i / 2 * 2);
         } else {
             color[0] = snake->getR();
             color[1] = (Uint8) (snake->getG() + 0x6F);
