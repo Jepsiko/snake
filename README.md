@@ -1,5 +1,5 @@
 # Rattlesnake
-This repo is a the Snake Game for unix in **C++** using the **SDL2** librairy and the **NCurses** librairy
+This repo is a the Snake Game for unix (maybe Windows) in **C++** using the **SDL2** librairy and the **NCurses** librairy
 
 # Play the game
 Play in console mode : `./Snake -c` or `./Snake --console`
