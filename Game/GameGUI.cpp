@@ -69,7 +69,7 @@ void GameGUI::update(unsigned long id, const std::vector<Snake*>& snakes, const 
 
             for (auto snake : snakes) {
                 // Draw the snake's tail
-                drawTail(snake);
+                drawTail(mySnake->getPosition(), snake);
 
                 // Draw the snake's head
                 color[0] = snake->getR();
@@ -82,7 +82,7 @@ void GameGUI::update(unsigned long id, const std::vector<Snake*>& snakes, const 
                 color[1] = 0x00;
                 color[2] = 0x00;
                 for (auto cherry : food) {
-                    drawRectOffset(mySnake->getPosition(), cherry->getPosition(), offset, offset, color);
+                    drawRectOffset(mySnake->getPosition(), cherry->getPosition(), offset*3, offset*3, color);
                 }
             }
 
@@ -155,7 +155,7 @@ void GameGUI::close() {
 
 GameGUI::GameGUI(GameManager *manager) : GameUI(manager) {}
 
-void GameGUI::drawTail(const Snake* snake) {
+void GameGUI::drawTail(const Position* mySnakePos, const Snake* snake) {
     // Directions
     const Position* UP = new Position(0, -1);
     const Position* DOWN = new Position(0, 1);
@@ -245,15 +245,15 @@ void GameGUI::drawTail(const Snake* snake) {
             }
         }
 
-        drawRectOffset(snake->getPosition(), pos, xOffset, yOffset, color);
+        drawRectOffset(mySnakePos, pos, xOffset, yOffset, color);
     }
 }
 
-void GameGUI::drawRectOffset(const Position *snakePos, const Position *position,
+void GameGUI::drawRectOffset(const Position *mySnakePos, const Position *position,
                              int widthOffset, int heightOffset, Uint8 color[3]) {
     SDL_Rect fillRect;
-    fillRect = {width/2 + (position->x - snakePos->x)*tileSize + widthOffset/2,
-                height/2 + (position->y - snakePos->y)*tileSize + heightOffset/2,
+    fillRect = {width/2 + (position->x - mySnakePos->x)*tileSize + widthOffset/2,
+                height/2 + (position->y - mySnakePos->y)*tileSize + heightOffset/2,
                 tileSize - widthOffset, tileSize - heightOffset};
     SDL_SetRenderDrawColor(gRenderer, color[0], color[1], color[2], 0xFF);
     SDL_RenderFillRect(gRenderer, &fillRect);

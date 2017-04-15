@@ -5,7 +5,6 @@
 #include <algorithm>
 
 Snake::Snake(Position *startPos) {
-    srand((unsigned) time(0));
     length = INITIAL_LENGTH;
     head = startPos;
     direction = new Position(1, 0);
@@ -88,4 +87,8 @@ unsigned char Snake::getG() const {
 
 unsigned char Snake::getB() const {
     return b;
+}
+
+const Position *Snake::getDirection() const {
+    return direction;
 }

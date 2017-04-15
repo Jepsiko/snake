@@ -37,6 +37,8 @@ public:
 
     void setTmpDirection(const Position* direction);
 
+    const Position* getDirection() const;
+
     int getLength() const;
 
     unsigned char getR() const;
