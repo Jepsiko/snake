@@ -56,7 +56,6 @@ bool Snake::onSnake(Position *position) {
     if (*head == *position) isOnSnake = true;
     else {
         for (auto pos : tail) {
-            logFile << pos->to_string().c_str();
             if (not isOnSnake) {
                 if (*pos == *position) {
                     isOnSnake = true;
@@ -74,6 +73,7 @@ void Snake::setTmpDirection(const Position *direction) {
 }
 
 int Snake::getLength() const {
+    // TODO : use this for performance issues and only draw when the snake can be seen
     return length;
 }
 
@@ -91,4 +91,12 @@ unsigned char Snake::getB() const {
 
 const Position *Snake::getDirection() const {
     return direction;
+}
+
+bool Snake::isInLoop(const Snake* otherSnake) {
+    if (onSnake(head)) {
+        return true;
+    } else {
+        return false;
+    }
 }

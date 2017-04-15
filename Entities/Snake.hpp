@@ -29,6 +29,8 @@ public:
 
     void grow();
 
+    bool isInLoop(const Snake* otherSnake);
+
     bool onSnake(Position* position);
 
     const Position* getPosition() const;

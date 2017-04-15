@@ -58,36 +58,51 @@ bool GameManager::play() {
     unsigned long count = 0;
     for (auto snake : snakes) {
         Position *snakePos = (Position *) snake->getPosition();
+        Position *nextPos = *snakePos + *snake->getDirection();
 
-        unsigned long countOtherSnake = 0;
-        for (auto otherSnake : snakes) {
-            Position *otherSnakePos = (Position *) otherSnake->getPosition();
-            if (count != countOtherSnake) {
+        bool looped = false;
+        for (auto cell : snake->getTail()) {
+            if (*nextPos == *cell) {
+                looped = true;
+            }
+        }
 
-                Position *nextPos = *snakePos + *snake->getDirection();
+        if (looped) {
+            unsigned long countOtherSnake = 0;
+            for (auto otherSnake : snakes) {
+                if (count != countOtherSnake and snake->isInLoop(otherSnake))
+                    killedSnakesId.push_back(countOtherSnake);
+                countOtherSnake++;
+            }
+        } else {
+            unsigned long countOtherSnake = 0;
+            for (auto otherSnake : snakes) {
+                Position *otherSnakePos = (Position *) otherSnake->getPosition();
                 Position *nextOtherPos = *otherSnakePos + *otherSnake->getDirection();
 
-                if (*nextPos == *otherSnakePos or *nextPos == *nextOtherPos) {
-                    killedSnakesId.push_back(count);
-                } else {
+                if (count != countOtherSnake) {
+                    if (*nextPos == *otherSnakePos or *nextPos == *nextOtherPos) {
+                        killedSnakesId.push_back(count);
+                    } else {
 
-                    int cellCount = 0;
-                    for (auto cell : otherSnake->getTail()) {
-                        if (*nextPos == *cell) {
-                            if (cellCount < INITIAL_LENGTH) {
-                                killedSnakesId.push_back(countOtherSnake);
+                        int cellCount = 0;
+                        for (auto cell : otherSnake->getTail()) {
+                            if (*nextPos == *cell) {
+                                if (cellCount < INITIAL_LENGTH) {
+                                    killedSnakesId.push_back(countOtherSnake);
+                                }
+                                if (cellCount >= INITIAL_LENGTH) {
+                                    killedSnakesId.push_back(count);
+                                }
                             }
-                            if (cellCount >= INITIAL_LENGTH) {
-                                killedSnakesId.push_back(count);
-                            }
+
+                            cellCount++;
                         }
-
-                        cellCount++;
                     }
                 }
-            }
 
-            countOtherSnake++;
+                countOtherSnake++;
+            }
         }
 
         count++;
