@@ -19,6 +19,7 @@ Play in graphic mode : `./Snake`
 
 # Future changes
 - Multiplayer mode
+- Snakes can kill by doing a loop around other snakes
 
 # Recent changes
 - 12/04/17 Graphic mode
@@ -26,3 +27,4 @@ Play in graphic mode : `./Snake`
 - 14/04/17 The snake has a random color
 - 14/04/17 The end of the snake's tail can be passed through
 - 15/04/17 We can zoom in and out in the GUI with the mouse wheel
+- 15/04/17 Snakes can kill each other but not by doing a loop

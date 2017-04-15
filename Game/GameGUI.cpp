@@ -13,8 +13,8 @@ bool GameGUI::init() {
                 "Snake",
                 SDL_WINDOWPOS_CENTERED,
                 SDL_WINDOWPOS_CENTERED,
-                SCREEN_WIDTH,
-                SCREEN_HEIGHT,
+                640,
+                480,
                 SDL_WINDOW_RESIZABLE);
         SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
         fullscreen = true;
@@ -52,7 +52,7 @@ void GameGUI::update(unsigned long id, const std::vector<Snake*>& snakes, const 
         // Play every TIME_BETWEEN_STEPS milliseconds
         if (timer->elapsedTimeInMiliseconds() >= TIME_BETWEEN_STEPS) {
             if (not manager->play()) timer->reset();
-            else quit = true;
+            else return;
 
             SDL_GetWindowSize(gWindow, tmpWidth, tmpHeight);
             width = *tmpWidth;
@@ -89,6 +89,7 @@ void GameGUI::update(unsigned long id, const std::vector<Snake*>& snakes, const 
             SDL_RenderPresent(gRenderer);
         }
 
+        // Event handler
         while (SDL_PollEvent(&e) != 0) {
             switch (e.type) {
                 case SDL_QUIT:
@@ -182,8 +183,8 @@ void GameGUI::drawTail(const Position* mySnakePos, const Snake* snake) {
             color[1] = (Uint8) (snake->getG() + 0x6F);
             color[2] = snake->getB();
 
-            xOffset = (int) ((INITIAL_LENGTH - i+1)/2*offset);
-            yOffset = (int) ((INITIAL_LENGTH - i+1)/2*offset);
+            xOffset = (int) ((INITIAL_LENGTH - i+1)/2*offset/2+2);
+            yOffset = (int) ((INITIAL_LENGTH - i+1)/2*offset/2+2);
         } else {
             color[0] = snake->getR();
             color[1] = (Uint8) (snake->getG() + 0x6F);
