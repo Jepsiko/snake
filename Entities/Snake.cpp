@@ -95,7 +95,16 @@ const Position *Snake::getDirection() const {
 
 bool Snake::isInLoop(const Snake* otherSnake) {
     if (onSnake(head)) {
-        return true;
+        if (length <= INITIAL_LENGTH) return false; // Can't loop around another snake
+
+        // TODO : determine the side of the snake that is inside the loop
+
+        std::vector<Position*> inLoopPositions;
+        // TODO : algorithm for putting all the positions in the loop in a vector
+
+
+        // TODO : for each position, return true if otherSnake's head or tail is on it
+        return false;
     } else {
         return false;
     }
