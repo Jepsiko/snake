@@ -3,7 +3,7 @@
 #ifndef SNAKE_ABSTRACTMANAGER_HPP
 #define SNAKE_ABSTRACTMANAGER_HPP
 
-#include "../Tools/Global.hpp"
+#include "../../Common/Tools/Global.hpp"
 
 class AbstractManager {
 public:

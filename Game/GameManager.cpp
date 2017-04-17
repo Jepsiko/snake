@@ -8,8 +8,6 @@
 
 GameManager::GameManager() : gameOver(false), id(0), stepCount(0) {
     snakes.push_back(new Snake(new Position()));
-    snakes.push_back(new Snake(new Position(-50, -5)));
-    snakes.push_back(new Snake(new Position(-100, 5)));
     spawnFood();
     if (isConsole) gameUI = new GameCUI(this);
     else gameUI = new GameGUI(this);
@@ -24,7 +22,7 @@ void GameManager::run() {
 }
 
 void GameManager::handleDirection(char directionChar) {
-    Position* direction;
+    Position *direction;
     switch (directionChar) {
         case 'U': // UP
             direction = new Position(0, -1);
@@ -60,62 +58,46 @@ bool GameManager::play() {
         Position *snakePos = (Position *) snake->getPosition();
         Position *nextPos = *snakePos + *snake->getDirection();
 
-        bool looped = false;
-        for (auto cell : snake->getTail()) {
-            if (*nextPos == *cell) {
-                looped = true;
-            }
-        }
+        unsigned long countOtherSnake = 0;
+        for (auto otherSnake : snakes) {
+            Position *otherSnakePos = (Position *) otherSnake->getPosition();
+            Position *nextOtherPos = *otherSnakePos + *otherSnake->getDirection();
 
-        if (looped) {
-            unsigned long countOtherSnake = 0;
-            for (auto otherSnake : snakes) {
-                if (count != countOtherSnake and snake->isInLoop(otherSnake))
-                    killedSnakesId.push_back(countOtherSnake);
-                countOtherSnake++;
-            }
-        } else {
-            unsigned long countOtherSnake = 0;
-            for (auto otherSnake : snakes) {
-                Position *otherSnakePos = (Position *) otherSnake->getPosition();
-                Position *nextOtherPos = *otherSnakePos + *otherSnake->getDirection();
+            if (count != countOtherSnake) {
+                if (*nextPos == *otherSnakePos or *nextPos == *nextOtherPos) {
+                    killedSnakesId.push_back(count);
+                } else {
 
-                if (count != countOtherSnake) {
-                    if (*nextPos == *otherSnakePos or *nextPos == *nextOtherPos) {
-                        killedSnakesId.push_back(count);
-                    } else {
-
-                        int cellCount = 0;
-                        for (auto cell : otherSnake->getTail()) {
-                            if (*nextPos == *cell) {
-                                if (cellCount < INITIAL_LENGTH) {
-                                    killedSnakesId.push_back(countOtherSnake);
-                                }
-                                if (cellCount >= INITIAL_LENGTH) {
-                                    killedSnakesId.push_back(count);
-                                }
+                    int cellCount = 0;
+                    for (auto cell : otherSnake->getTail()) {
+                        if (*nextPos == *cell) {
+                            if (cellCount < INITIAL_LENGTH) {
+                                killedSnakesId.push_back(countOtherSnake);
                             }
-
-                            cellCount++;
+                            if (cellCount >= INITIAL_LENGTH) {
+                                killedSnakesId.push_back(count);
+                            }
                         }
+
+                        cellCount++;
                     }
                 }
-
-                countOtherSnake++;
             }
+
+            countOtherSnake++;
         }
 
         count++;
     }
 
-    for (unsigned long i = killedSnakesId.size(); i-- > 0; ) {
-        Snake* snake = snakes.at(killedSnakesId.at(i));
+    for (unsigned long i = killedSnakesId.size(); i-- > 0;) {
+        Snake *snake = snakes.at(killedSnakesId.at(i));
 
         for (auto cell : snake->getTail()) {
             food.push_back(new Food(cell));
         }
 
-        snakes.erase(snakes.begin()+killedSnakesId.at(i));
+        snakes.erase(snakes.begin() + killedSnakesId.at(i));
     }
 
     // Moves all the snakes and makes them grow if they eat
@@ -138,10 +120,8 @@ bool GameManager::play() {
     }
 
     // Spawns the food
-    if (stepCount > STEP_COUNT_BETWEEN_FOOD_SPAWN) {
-        spawnFood();
-        stepCount = 0;
-    }
+    if (stepCount % STEP_COUNT_BETWEEN_FOOD_SPAWN == 0) spawnFood();
+    if (stepCount % 120 == 0) snakes.push_back(new Snake(new Position(-50, 0)));
     stepCount++;
 
     return snakes.size() == 0;
@@ -151,7 +131,7 @@ void GameManager::spawnFood() {
     int range;
     int tries;
 
-    Position* foodPos;
+    Position *foodPos;
     int x;
     int y;
 
@@ -174,7 +154,7 @@ void GameManager::spawnFood() {
 }
 
 void GameManager::deleteFood(Position *foodPos) {
-    Position* cherryPos;
+    Position *cherryPos;
 
     int count = 0;
     for (auto cherry : food) {
@@ -183,5 +163,5 @@ void GameManager::deleteFood(Position *foodPos) {
         count++;
     }
 
-    food.erase(food.begin()+count);
+    food.erase(food.begin() + count);
 }

@@ -1,7 +1,7 @@
 
 #include <string>
 #include "GameCUI.hpp"
-#include "../Tools/Constants.hpp"
+#include "../Common/Tools/Constants.hpp"
 
 bool GameCUI::init() {
     try {

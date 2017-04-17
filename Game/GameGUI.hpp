@@ -3,8 +3,8 @@
 #ifndef SNAKE_GAMEGUI_HPP
 #define SNAKE_GAMEGUI_HPP
 
-#include "../Tools/Constants.hpp"
-#include "../Abstract/AbstractGUI.hpp"
+#include "../Common/Tools/Constants.hpp"
+#include "../Client/Abstract/AbstractGUI.hpp"
 #include "GameUI.hpp"
 
 class GameManager;

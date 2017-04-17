@@ -3,9 +3,9 @@
 #ifndef SNAKE_GAME_HPP
 #define SNAKE_GAME_HPP
 
-#include "../Abstract/AbstractManager.hpp"
-#include "../Entities/Snake.hpp"
-#include "../Entities/Food.hpp"
+#include "../Client/Abstract/AbstractManager.hpp"
+#include "../Common/Entities/Snake.hpp"
+#include "../Common/Entities/Food.hpp"
 
 class GameUI;
 

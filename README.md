@@ -11,15 +11,12 @@ Play in graphic mode : `./Snake`
 
 **Grow :** you grow when you eat food (red squares)
 
-**Kill :**
-- You can kill another snake by eating the end of his tail (another color than the rest of the tail)
-- You can also kill by making a loop around the other snake and touching the end of your tail
+**Kill :** You can kill another snake by eating the end of his tail (another color than the rest of the tail)
 
-**Die :** You die if you eat your own tail except the end or another tail
+**Die :** You die if you eat another tail or your own tail except the end
 
 # Future changes
 - Multiplayer mode
-- Snakes can kill by doing a loop around other snakes
 
 # Recent changes
 - 12/04/17 Graphic mode

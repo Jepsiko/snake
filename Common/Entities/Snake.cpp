@@ -1,8 +1,8 @@
 
 
+#include <stack>
 #include "Snake.hpp"
 #include "../Tools/Constants.hpp"
-#include <algorithm>
 
 Snake::Snake(Position *startPos) {
     length = INITIAL_LENGTH;
@@ -50,10 +50,10 @@ void Snake::grow() {
     length += GROW_RATE;
 }
 
-bool Snake::onSnake(Position *position) {
+bool Snake::onSnake(Position *position) const {
     bool isOnSnake = false;
 
-    if (*head == *position) isOnSnake = true;
+    if (head != position and *head == *position) isOnSnake = true;
     else {
         for (auto pos : tail) {
             if (not isOnSnake) {
@@ -91,21 +91,4 @@ unsigned char Snake::getB() const {
 
 const Position *Snake::getDirection() const {
     return direction;
-}
-
-bool Snake::isInLoop(const Snake* otherSnake) {
-    if (onSnake(head)) {
-        if (length <= INITIAL_LENGTH) return false; // Can't loop around another snake
-
-        // TODO : determine the side of the snake that is inside the loop
-
-        std::vector<Position*> inLoopPositions;
-        // TODO : algorithm for putting all the positions in the loop in a vector
-
-
-        // TODO : for each position, return true if otherSnake's head or tail is on it
-        return false;
-    } else {
-        return false;
-    }
 }

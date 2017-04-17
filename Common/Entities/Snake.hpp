@@ -29,10 +29,9 @@ public:
 
     void grow();
 
-    bool isInLoop(const Snake* otherSnake);
+    bool onSnake(Position* position) const;
 
-    bool onSnake(Position* position);
-
+    // Mutators
     const Position* getPosition() const;
 
     const std::vector<Position*>& getTail() const;
@@ -43,6 +42,7 @@ public:
 
     int getLength() const;
 
+    // Color
     unsigned char getR() const;
 
     unsigned char getG() const;

@@ -1,7 +1,7 @@
 
 #include <cstring>
-#include "Tools/Global.hpp"
-#include "Game/GameManager.hpp"
+#include "../Common/Tools/Global.hpp"
+#include "../Game/GameManager.hpp"
 
 int main(int argc, char **argv) {
 

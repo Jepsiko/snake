@@ -5,8 +5,8 @@
 
 
 #include "AbstractManager.hpp"
-#include "../Entities/Snake.hpp"
-#include "../Entities/Food.hpp"
+#include "../../Common/Entities/Snake.hpp"
+#include "../../Common/Entities/Food.hpp"
 
 class AbstractUI {
 public:

@@ -6,6 +6,7 @@
 
 #include <iosfwd>
 #include <string>
+#include <vector>
 #include "Tools/Global.hpp"
 
 class Position {
@@ -16,6 +17,13 @@ public:
     Position(int x = 0, int y = 0) : x(x), y(y) {}
 
     std::string to_string() const { return "(" + std::to_string(this->x) + "," + std::to_string(this->y) + ")"; }
+
+    bool inVector(std::vector<Position*>& positions) {
+        for (auto position : positions) {
+            if (*this == *position) return true;
+        }
+        return false;
+    }
 
     bool operator==(const Position& other) {
         return this->x == other.x and this->y == other.y;
