@@ -4,7 +4,7 @@
 #define SNAKE_GAMECUI_HPP
 
 #include "GameUI.hpp"
-#include "../Client/Abstract/AbstractCUI.hpp"
+#include "../Abstract/AbstractCUI.hpp"
 
 class GameManager;
 

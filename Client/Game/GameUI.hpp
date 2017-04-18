@@ -4,9 +4,9 @@
 #define SNAKE_GAMEUI_HPP
 
 
-#include "../Client/Abstract/AbstractUI.hpp"
+#include "../Abstract/AbstractUI.hpp"
 #include "GameManager.hpp"
-#include "../Common/Tools/Timer.hpp"
+#include "../../Common/Tools/Timer.hpp"
 
 class GameUI : public virtual AbstractUI {
 protected:

@@ -14,10 +14,10 @@ set(CLIENT_FILES Client/snakeLauncher.cpp
         Client/Abstract/AbstractGUI.hpp
 
         # GAME
-        Game/GameManager.cpp
-        Game/GameUI.cpp
-        Game/GameCUI.cpp
-        Game/GameGUI.cpp
+        Client/Game/GameManager.cpp
+        Client/Game/GameUI.cpp
+        Client/Game/GameCUI.cpp
+        Client/Game/GameGUI.cpp
 
         # ENTITIES
         Common/Entities/Snake.cpp
@@ -34,6 +34,17 @@ set(CLIENT_FILES Client/snakeLauncher.cpp
 add_executable(Snake ${CLIENT_FILES})
 target_link_libraries(Snake ncurses SDL2 SDL2_image)
 
-set(SERVER_FILES Server/serverLauncher.cpp)
+set(SERVER_FILES Server/serverLauncher.cpp
+        # ENTITIES
+        Common/Entities/Snake.cpp
+        Common/Entities/Food.cpp
+
+        Common/Position.hpp
+
+        # TOOLS
+        Common/Tools/Constants.hpp
+        Common/Tools/Ressources.hpp
+        Common/Tools/Global.cpp
+        Common/Tools/Timer.cpp)
 
 add_executable(SnakeServer ${SERVER_FILES})
