@@ -2,17 +2,7 @@
 
 #include "GameEngine.hpp"
 
-void GameEngine::run() {
-    /*
-    if (gameUI->init()) {
-        srand((unsigned) time(0));
-        gameUI->update(id, snakes, food);
-    }
-    gameUI->close();
-    */
-}
-
-void GameEngine::handleDirection(char directionChar) {
+void GameEngine::handleDirection(unsigned long id, char directionChar) {
     Position *direction;
     switch (directionChar) {
         case 'U': // UP

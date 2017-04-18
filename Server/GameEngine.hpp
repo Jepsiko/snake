@@ -10,7 +10,6 @@
 
 class GameEngine {
 private:
-    unsigned long id;
     std::vector<Snake*> snakes;
     std::vector<Food*> food;
 
@@ -21,9 +20,7 @@ private:
     void deleteFood(Position* position);
 
 public:
-    void run();
-
-    void handleDirection(char direction);
+    void handleDirection(unsigned long id, char direction);
 
     bool play();
 };
